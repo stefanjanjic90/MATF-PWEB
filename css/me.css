@@ -1,0 +1,118 @@
+body {
+     background-color: #f2f2f5;
+   padding: 20px 10px;
+}
+
+#content
+{
+   position: relative;
+   width: 70%;
+   margin: 0px auto 0px auto;
+}
+#tab-container
+{
+   width: 126px;
+   position: absolute;
+   top: 150px;
+   left: -126px;
+}
+
+#main-container
+{
+   /*min-height: 400px;
+   margin: 20px 175px auto 225px;
+   padding: 25px 50px;
+   background-color: #fff;
+   border: 1px solid #111;
+   border-radius: 15px;
+   border-color: rgb(255,255,255);
+  /*#337ab7*/ 
+  
+  /*min-height: 400px;*/
+   margin: 0px auto 0px auto;
+   padding: 25px 50px;
+   background-color: #fff;
+   border: 1px solid #111;
+   border-radius: 15px;
+   border-color: rgb(255,255,255);
+}
+
+
+#log_out
+{
+	float:right;
+}
+
+#imeIprezime
+{
+	margin-right: 10px;
+}
+
+.forme_dezurstava
+{
+   display:block;
+   min-height: 500px;
+   max-height: 500px; 
+   padding: 20px;
+   background-color: #eee;
+   border: 1px solid #eee;
+   border-radius: 8px;
+   padding: 10px 20px;
+   overflow: auto;
+   clear: both;
+   margin-top: 40px;
+   /*border-color: rgb(255,255,255);*/
+ }
+
+p.imenaFormi {
+	clear: both;
+	color: #777;
+	margin-top: 0px;
+	margin-bottom: 40px;
+	margin-left: 0px;
+	font-weight: 700;
+}
+
+
+.kartica
+{
+	height: auto;
+	width: 45%;
+	margin-left: 10px;
+	margin-right:10px;
+	margin-bottom: 10px;
+	min-height: 100px;
+	background-color: rgb(255,255,255);
+	border-radius: 10px;
+	color: #337ab7;
+	border: 2px solid #337ab7;
+}
+
+#grafZamena
+{
+	float:right;
+}
+
+#napomena
+{
+	max-width: 50px;
+	border: 1px solid white;
+	border-radius: 3px;
+}
+
+#grafDodaj
+{
+	float:right;
+}
+.header
+{
+	padding: 8px;
+	border-bottom: 1px solid #337ab7;
+	font-size: 110%;
+}
+
+.bodyCard
+{
+	color: rgb(96,96,96);
+	padding: 8px;
+}
