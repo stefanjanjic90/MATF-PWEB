@@ -1,107 +1,104 @@
-  <!-- tab za dodavanje novog korisnika:
-	    • formular koji sadrzi sledece podatke
-		ime i prezime: jednoredno tekstualno polje
-		glavna email adresa: jednoredno tekstualno polje
-		rezervna email adresa: jednoredno tekstualno polje
-		mod:
-		  serija radio dugmica sa vrednostima asistent, glavni organizator i administrator
-		katedra:
-		  lista sa imenima katedara
-		  lista je dostupna na: http://www.matf.bg.ac.rs/m/93/katedre/
-		  ukoliko je za korisnika odabran mod asistent prikazati i seriju jednorednih
-		  tekstualnih polja (najvise 8?) za unos imena predmeta koje drzi
-		dugme za potvrdu unosa
-		dugme za reset unosa
-	  -->
-	  
-	  <div ng-controler="newUserControler">
-	  <div class="forme_dezurstava">
-	    <p class="imenaFormi"> Додавање новог корисника</p>
-	    
-	    <form class="form-horizontal">
-	      <fieldset>
-<!-- 		<legend>Legend</legend> -->
-		
-		<div class="form-group">
-		  <label for="inputIP" class="col-lg-2 control-label">Име и презиме</label>
-		  <div class="col-lg-10">
-		    <input type="text" class="form-control" name="inputIP" ng-model="formData.imePrezime" placeholder="Име и презиме">
-		  </div>
-		</div>
-		
-		
-		<div class="form-group">
-		  <label for="inputEmailG" class="col-lg-2 control-label">Главна мејл адреса</label>
-		  <div class="col-lg-10">
-		    <input type="text" class="form-control" name="inputEmailG" ng-model="formData.glavniEmail" placeholder="Главна мејл адреса">
-		  </div>
-		</div>
-		
-		<div class="form-group">
-		  <label for="inputEmailR" class="col-lg-2 control-label">Резервна мејл адреса</label>
-		  <div class="col-lg-10">
-		    <input type="text" class="form-control" name="inputEmailR" ng-model="formData.rezervniEmail" placeholder="Резервна мејл адреса">
-		  </div>
-		</div>
-		
-		<div class="form-group">
-		  <label class="col-lg-2 control-label">Мод</label> <!-- TODO: koji mod za koga da se salhe? 1, 2, 3? -->
-		  <div class="col-lg-10">
-		    <div class="radio">
-		      <label>
-			<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" ng-model="formData.mod" checked ng-click="setVisible(false)">
-			Администратор
-		      </label>
-		    </div>
-		    <div class="radio">
-		      <label>
-			<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" ng-model="formData.mod" ng-click="setVisible(true)">
-			Асистент
-		      </label>
-		    </div>
-		    <div class="radio">
-		      <label>
-			<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" ng-model="formData.mod" ng-click="setVisible(false)">
-			Главни организатор
-		      </label>
-		    </div>
-		  </div>
-		</div>
+<!-- tab za dodavanje novog korisnika:
+  formular koji sadrzi sledece podatke
+    ime i prezime: jednoredno tekstualno polje
+    glavna email adresa: jednoredno tekstualno polje
+    rezervna email adresa: jednoredno tekstualno polje
+    mod:
+      serija radio dugmica sa vrednostima asistent, glavni organizator i administrator
+    katedra:
+      lista sa imenima katedara
+      lista je dostupna na: http://www.matf.bg.ac.rs/m/93/katedre/
+    ukoliko je za korisnika odabran mod asistent prikazati i seriju jednorednih tekstualnih polja (najvise 8?) za unos imena predmeta koje drzi
+    dugme za potvrdu unosa
+    dugme za reset unosa
+-->
+
+<div ng-controler="newUserControler">
+  <div class="forme_dezurstava">
+    
+    <p class="imenaFormi"> Додавање новог корисника</p>
+    
+    <form class="form-horizontal" name="formnewuser">
+      <fieldset>
+	<!-- <legend>Legend</legend> -->
 	
-		<div class="form-group" ng-show="returnVisible()">
-		  <label for="inputPredmeti1" class="col-lg-2 control-label">Предмети</label>
-		  <div class="col-lg-10">
-		    <input type="text" class="form-control" name="inputPredmeti1" ng-model="formData.pred1" placeholder="Предмет 1"> <br />
-		    <input type="text" class="form-control" name="inputPredmeti2" ng-model="formData.pred2" placeholder="Предмет 2"> <br />
-		    <input type="text" class="form-control" name="inputPredmeti3" ng-model="formData.pred3" placeholder="Предмет 3"> <br />
-		    <input type="text" class="form-control" name="inputPredmeti4" ng-model="formData.pred4" placeholder="Предмет 4"> <br />
-		    <input type="text" class="form-control" name="inputPredmeti5" ng-model="formData.pred5" placeholder="Предмет 5"> <br />
-		    <input type="text" class="form-control" name="inputPredmeti6" ng-model="formData.pred6" placeholder="Предмет 6"> <br />
-		    <input type="text" class="form-control" name="inputPredmeti7" ng-model="formData.pred7" placeholder="Предмет 7"> <br />
-		    <input type="text" class="form-control" name="inputPredmeti8" ng-model="formData.pred8" placeholder="Предмет 8">
-		  </div>
-		</div>
-	
-	
-		<!-- TODO: spisak katedri u niz pa ng-repeat... -->
-		<div class="form-group">
-		  <label for="select" class="col-lg-2 control-label">Катедра</label>
-		  <div class="col-lg-10">
-		    <select class="form-control" id="select" name="katedre" ng-model="formData.kat">
-		      <option ng-repeat="katedra in katedre" ng-model="formData.k" name="katedra"> {{ katedra.ime }} </option>
-		    </select>
-		  </div>
-		</div>
-		
-		<div class="form-group">
-		  <div class="col-lg-10 col-lg-offset-2">
-		    <button type="reset" class="btn btn-default" ng-click="setVisible(false)" name="reset">Поништи</button>
-		    <button type="submit" class="btn btn-primary" ng-click="submitData()" name="submit">Пошаљи</button>
-		  </div>
-		</div>
-	      </fieldset>
-	    </form>	
-	    
-	    
-	  </div> <!-- forme dezurstva -->
+	<div class="form-group">
+	  <label for="inputIP" class="col-lg-2 control-label">Име и презиме</label>
+	  <div class="col-lg-10">
+	    <input type="text" class="form-control" name="inputImePrezime" ng-model="formData.imePrezime" placeholder="Име и презиме" required>
 	  </div>
+	</div>
+	
+	<div class="form-group">
+	  <label for="inputEmailG" class="col-lg-2 control-label">Главна мејл адреса</label>
+	  <div class="col-lg-10">
+	    <input type="email" class="form-control" name="inputEmailG" ng-model="formData.glavniEmail" placeholder="Главна мејл адреса" reguired>
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <label for="inputEmailR" class="col-lg-2 control-label">Резервна мејл адреса</label>
+	  <div class="col-lg-10">
+	    <input type="email" class="form-control" name="inputEmailR" ng-model="formData.rezervniEmail" placeholder="Резервна мејл адреса" required>
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <label for="mod" class="col-lg-2 control-label">Мод</label> <!-- TODO: koji mod za koga da se salhe? 1, 2, 3? -->
+	  <div class="col-lg-10">
+	    <div class="radio">
+	      <label>
+		<input type="radio" name="mod" value="administrator" ng-model="formData.mod" ng-checked="true" ng-click="setVisible(false)">
+		Администратор
+	      </label>
+	    </div>
+	    <div class="radio">
+	      <label>
+		<input type="radio" name="mod" value="asistent" ng-model="formData.mod" ng-click="setVisible(true)">
+		Асистент
+	      </label>
+	    </div>
+	    <div class="radio">
+	      <label>
+		<input type="radio" name="mod" value="glavniOrganizator" ng-model="formData.mod" ng-click="setVisible(false)">
+		Главни организатор
+	      </label>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="form-group" ng-show="returnVisible()">
+	  <label for="inputPredmeti1" class="col-lg-2 control-label">Предмети</label>
+	  <div class="col-lg-10">
+	    <!-- TODO: required - asistent drzi bar 1 predmet?   -->
+	    <input type="text" class="form-control" name="inputPredmeti1" ng-model="formData.pred1" placeholder="Предмет 1" ng-required="returnVisible()"> <br />
+	    <input type="text" class="form-control" name="inputPredmeti2" ng-model="formData.pred2" placeholder="Предмет 2"> <br />
+	    <input type="text" class="form-control" name="inputPredmeti3" ng-model="formData.pred3" placeholder="Предмет 3"> <br />
+	    <input type="text" class="form-control" name="inputPredmeti4" ng-model="formData.pred4" placeholder="Предмет 4"> <br />
+	    <input type="text" class="form-control" name="inputPredmeti5" ng-model="formData.pred5" placeholder="Предмет 5"> <br />
+	    <input type="text" class="form-control" name="inputPredmeti6" ng-model="formData.pred6" placeholder="Предмет 6"> <br />
+	    <input type="text" class="form-control" name="inputPredmeti7" ng-model="formData.pred7" placeholder="Предмет 7"> <br />
+	    <input type="text" class="form-control" name="inputPredmeti8" ng-model="formData.pred8" placeholder="Предмет 8">
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <label for="select" class="col-lg-2 control-label">Катедра</label>
+	  <div class="col-lg-10">
+	    <select class="form-control" id="select" name="katedre" ng-model="formData.kat" required>
+	      <option ng-repeat="katedra in katedre" ng-model="formData.k" name="katedra"> {{ katedra }} </option>
+	    </select>
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <div class="col-lg-10 col-lg-offset-2">
+	    <button type="reset" class="btn btn-default" ng-click="setVisible(false); resetData()" name="reset">Поништи</button>
+	    <button type="submit" class="btn btn-primary" ng-disabled="formnewuser.$invalid" ng-click="submitData()" name="submit">Пошаљи</button>
+	  </div>
+	</div>
+      </fieldset>
+    </form>
+    
+  </div> <!-- forme dezurstva -->
+</div>
