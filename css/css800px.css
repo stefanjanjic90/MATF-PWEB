@@ -1,0 +1,59 @@
+/*TODO: sredi ovo menjanje velicine ekrana jos...*/
+
+body 
+{
+  font-size: 100%;
+  padding: 2%;
+}
+
+.forme_dezurstava
+{
+   display:block;
+   padding: 0.2%;
+   background-color: #eee;
+   border: 1px solid #eee;
+   border-radius: 5px;
+   margin-top: 0.40%;
+   overflow: visible;
+   /*border-color: rgb(255,255,255);*/
+ }
+ 
+#content
+{
+   position: static;
+   padding: 0%;
+   margin: 0px auto 0px auto;
+}
+#tab-container
+{
+   position: static;
+   display: inline;
+}
+
+#tab-container ul
+{
+  display: inline;
+}
+
+#tab-container ul li
+{
+  float: left;
+}
+
+#main-container
+{
+   margin: 0px auto 0px auto;
+   padding: 2%;
+   background-color: #fff;
+   border: 1px solid #111;
+   border-radius: 5px;
+   border-color: rgb(255,255,255);
+}
+
+@media screen and (max-width: 670px) 
+{
+  #tab-container ul li 
+  {
+    width: 25%;
+  }
+}
