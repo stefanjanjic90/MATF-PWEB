@@ -2,24 +2,16 @@ var account = angular.module('accountModule', []);
 		// cuvati username ulogovanog korisnika u globalnoj promenljivoj($scope.user)
 account.controller('SecDutyController', function($scope, $http){
 /*
-    $scope.duty = [];
+    $scope.duty = []; // [course, assistant, date, time, remark]
   
-    $http({
-      method: 'get',
-      url: 'sporedna_dezurstva.php', // prava adresa
-      responseType: 'JSON',
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-			params: { user: $scope.user }
-    })
-    .success(function(data, status, headers, config){
-      if(data != null)
-      	$scope.duty = angular.fromJson(data)
-      console.log("success: " + status);
-      //console.log(data);
-    })
-    .error(function(data, status, headers, config){
-      console.log("error: " + status);
-    });
+    			$http.get('sporedna_dezurstva.php?user='+$scope.user, {responseType: 'JSON'}).
+						success(function(data, status, headers, config){
+							if(data!=="null")
+								$scope.duty = angular.fromJson(data);
+						}).
+						error(function(data, status, headers, config){
+							console.log("error: " + status);
+						});
 */
 
 
@@ -54,25 +46,18 @@ account.controller('SecDutyController', function($scope, $http){
     }
 /*
 
-    $scope.possibleRotate = [];
+    $scope.possibleRotate = []; // [lista asistenata koji su slobodni]
   
-    $http({
-      method: 'get',
-      url: 'slobodni_dezurni.php', // prava adresa
-      responseType: 'JSON',
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-			params: { user: $scope.user, course: TODO: kako pamtiti parametre za pojedinacne kartice? predmet sa obaveze? }
-    })
-    .success(function(data, status, headers, config){
-      if(data != null)
-      	$scope.possibleRotate = angular.fromJson(data)
-      console.log("success: " + status);
-      //console.log(data);
-    })
-    .error(function(data, status, headers, config){
-      console.log("error: " + status);
-    });
-*/
+    			$http.get('slobodni_dezurni.php' //TODO: kako pamtiti parametre za pojedinacne kartice? predmet sa obaveze?, {responseType: 'JSON'}).
+						success(function(data, status, headers, config){
+							if(data!=="null")
+								$scope.possibleRotate = angular.fromJson(data);
+						}).
+						error(function(data, status, headers, config){
+							console.log("error: " + status);
+						});
+
+  */
 		$scope.possibleRotate = ["Ivana Tanasijevic", "Mirko Spasic"];
 
 
@@ -86,25 +71,17 @@ account.controller('SecDutyController', function($scope, $http){
 
 account.controller('PrimDutyController', function($scope, $http){
 /*
-    $scope.duty = [];
-  
-    $http({
-      method: 'get',
-      url: 'glavna_dezurstva.php', // prava adresa
-      responseType: 'JSON',
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-			params: { user: $scope.user }
-    })
-    .success(function(data, status, headers, config){
-      if(data != null)
-      	$scope.duty = angular.fromJson(data)
-      console.log("success: " + status);
-      //console.log(data);
-    })
-    .error(function(data, status, headers, config){
-      console.log("error: " + status);
-    });
+    $scope.duty = []; // [course, assistants, date, time, remark]
 
+    			$http.get('glavna_dezurstva.php?user='+$scope.user, {responseType: 'JSON'}).
+						success(function(data, status, headers, config){
+							if(data!=="null")
+								$scope.duty = angular.fromJson(data);
+						}).
+						error(function(data, status, headers, config){
+							console.log("error: " + status);
+						});
+  
 */
 
     $scope.duty = [
@@ -141,23 +118,16 @@ account.controller('NewDutyController', function($scope, $http){
     
   
     // predmeti koje drzi asistent u tekucoj godini
-    $http({
-      method: 'get',
-      url: 'predmeti_asistenta.php', // prava adresa
-      responseType: 'JSON',
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-			params: { user: $scope.user }
-    })
-    .success(function(data, status, headers, config){
-      if(data != null)
-      	$scope.course = angular.fromJson(data)
-      console.log("success: " + status);
-      //console.log(data);
-    })
-    .error(function(data, status, headers, config){
-      console.log("error: " + status);
-    });	
-    
+
+    			$http.get('predmeti_asistenta.php?user='+$scope.user, {responseType: 'JSON'}).
+						success(function(data, status, headers, config){
+							if(data!=="null")
+								$scope.course = angular.fromJson(data);
+						}).
+						error(function(data, status, headers, config){
+							console.log("error: " + status);
+						});
+
     
   $http.get('json/ucionice.json', {responseType: 'JSON'}).success(function(data){  //TODO proslediti .php
     $scope.classrooms = angular.fromJson(data);
@@ -217,24 +187,17 @@ $scope.assistants = [
 account.controller('CompletedDutyController', function($scope, $http){
 
 /*
-    $scope.compDuty = [];
+    $scope.compDuty = []; //[course, date, duration]
   
-    $http({
-      method: 'get',
-      url: 'prethodna_dezurstva.php', // prava adresa
-      responseType: 'JSON',
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-			params: { user: $scope.user }
-    })
-    .success(function(data, status, headers, config){
-      if(data != null)
-      	$scope.duty = angular.fromJson(data)
-      console.log("success: " + status);
-      //console.log(data);
-    })
-    .error(function(data, status, headers, config){
-      console.log("error: " + status);
-    });
+    			$http.get('prethodna_dezurstva.php?user='+$scope.user, {responseType: 'JSON'}).
+						success(function(data, status, headers, config){
+							if(data!=="null")
+								$scope.compDuty = angular.fromJson(data);
+						}).
+						error(function(data, status, headers, config){
+							console.log("error: " + status);
+						});
+  
 */
 
 $scope.compDuty = [
@@ -260,24 +223,16 @@ $scope.compDuty = [
 
 account.controller('UserOfferController', function($scope, $http){
 /*
-	$scope.offer = [];
-	// offer [asistent_koji_salje, predmet, datum, vreme]
-	  $http({
-      method: 'get',
-      url: 'ponude_dezurstava.php', // prava adresa
-      responseType: 'JSON',
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-			params: { user: $scope.user }
-    })
-    .success(function(data, status, headers, config){
-      if(data != null)
-      	$scope.offer = angular.fromJson(data)
-      console.log("success: " + status);
-      //console.log(data);
-    })
-    .error(function(data, status, headers, config){
-      console.log("error: " + status);
-    });
+	$scope.offer = []; // [asistent_koji_salje, predmet, datum, vreme]
+		
+	    			$http.get('ponude_dezurstava.php?user='+$scope.user, {responseType: 'JSON'}).
+						success(function(data, status, headers, config){
+							if(data!=="null")
+								$scope.offer = angular.fromJson(data);
+						}).
+						error(function(data, status, headers, config){
+							console.log("error: " + status);
+						});
 */
 
 $scope.offer = [
@@ -305,24 +260,17 @@ $scope.offer = [
 
 account.controller('CommentsController', function($scope, $http){
 /*
-	$scope.comments = [];
-	// comments [komentar, asistent, predmet, datum]
-	  $http({
-      method: 'get',
-      url: 'komenatari.php', // prava adresa
-      responseType: 'JSON',
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-			params: { user: $scope.user }
-    })
-    .success(function(data, status, headers, config){
-      if(data != null)
-      	$scope.comments = angular.fromJson(data)
-      console.log("success: " + status);
-      //console.log(data);
-    })
-    .error(function(data, status, headers, config){
-      console.log("error: " + status);
-    });
+	$scope.comments = [];  //[komentar, asistent, predmet, datum]
+	  
+    			$http.get('komentari.php?user='+$scope.user, {responseType: 'JSON'}).
+						success(function(data, status, headers, config){
+							if(data!=="null")
+								$scope.comments = angular.fromJson(data);
+						}).
+						error(function(data, status, headers, config){
+							console.log("error: " + status);
+						});
+	  
 */
 
 $scope.comments = [	
