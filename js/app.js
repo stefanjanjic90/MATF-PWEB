@@ -2,13 +2,15 @@ var app = angular.module('Application', []);
 
 app.controller('AppointmentsController', function($scope, $http){
 	
-		$scope.tableOfDuty = [];
+		$scope.tableOfDuty = []; //tableOfDuty [datum, vreme, ucionice, kurs, glavni dezurni]
 		$scope.msg = "";
-	//tableOfDuty [datum, vreme, ucionice, kurs, glavni dezurni]
+
 		  $http.get('zakazane_obaveze.php', {responseType: 'JSON'}).success(function(data){
     		$scope.tableOfDuty = angular.fromJson(data);
    			}).error(function(data, status, headers, config){
 							$scope.msg=status+": an error occured";	});
+							
+		$scope.tableofDuty = [{date: '29.10.2014', time: '09:00-10:00', classrooms:['uci1, uci2'], course: 'Razvoj softvera', assistant:'Neko Neko'}];
 });
 
 app.controller('HoursOnCallController', function($scope, $http){
