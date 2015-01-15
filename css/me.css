@@ -93,7 +93,9 @@ p.imenaFormi {
 .napomena
 {
 	border: 1px solid white;
-	border-radius: 3px;
+	border-radius: 5px;
+	width: 305px;
+	padding: 3px;
 }
 
 #grafDodaj
@@ -147,4 +149,10 @@ p.imenaFormi {
 footer
 {
 	font-size: x-small;
+}
+
+
+textarea
+{
+	resize: none;
 }
