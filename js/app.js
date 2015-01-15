@@ -25,6 +25,7 @@ app.controller('HoursOnCallController', function($scope, $http){
 
 	
 });
+
 /*
 app.controller('LogInController', function($scope, $http){
 
