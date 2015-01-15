@@ -1,6 +1,7 @@
-body {
-     background-color: #f2f2f5;
-   padding: 20px 10px;
+body 
+{
+    background-color: #f2f2f5;
+    padding: 20px 10px;
 }
 
 #content
@@ -19,29 +20,22 @@ body {
 
 #main-container
 {
-   /*min-height: 400px;
-   margin: 20px 175px auto 225px;
-   padding: 25px 50px;
-   background-color: #fff;
-   border: 1px solid #111;
-   border-radius: 15px;
-   border-color: rgb(255,255,255);
-  /*#337ab7*/ 
-  
-  /*min-height: 400px;*/
    margin: 0px auto 0px auto;
    padding: 25px 50px;
    background-color: #fff;
-   border: 1px solid #111;
+   border: 1px solid #337ab7;
    border-radius: 15px;
-   overflow-x: hidden;
-   border-color: rgb(255,255,255);
 }
-
 
 #log_out
 {
 	float:right;
+}
+
+#log_in
+{
+	float:right;
+	margin-bottom: 20px;
 }
 
 #imeIprezime
@@ -53,7 +47,7 @@ body {
 {
    display:block;
    min-height: 500px;
-   max-height: 500px; 
+   /*max-height: 500px; */
    padding: 20px;
    background-color: #eee;
    border: 1px solid #eee;
@@ -62,7 +56,7 @@ body {
    overflow: auto;
    clear: both;
    margin-top: 40px;
-   /*border-color: rgb(255,255,255);*/
+   
  }
 
 .container
@@ -108,13 +102,15 @@ p.imenaFormi {
 #grafZamena
 {
 	float:right;
+	color: 337ab7;
 }
 
-#napomena
+.napomena
 {
-	max-width: 50px;
 	border: 1px solid white;
-	border-radius: 3px;
+	border-radius: 5px;
+	width: 305px;
+	padding: 3px;
 }
 
 #grafDodaj
@@ -177,3 +173,45 @@ p.imenaFormi {
   height: 190px;
   width: 190px;
 }
+
+.bold
+{
+	font-weight: bold;
+}
+
+.zamene
+{
+	width: 60%;
+	height: auto;
+	margin-right: 50px;
+}
+
+.div1 {
+    background: Brown;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    
+}
+.div1 ul {
+    position: relative;
+    top: 50%;
+}
+
+#zamena_asistenti 
+{
+	display:  none;
+}
+
+
+footer
+{
+	font-size: x-small;
+}
+
+
+textarea
+{
+	resize: none;
+}
+
