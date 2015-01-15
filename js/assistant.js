@@ -1,5 +1,21 @@
 var account = angular.module('accountModule', []);
 		// cuvati username ulogovanog korisnika u globalnoj promenljivoj($scope.user)
+		
+account.controller('PanelController', function($scope, $http){
+
+	$scope.tab = 1;
+	
+	$scope.selectTab = function(setTab)
+	{
+		$scope.tab = setTab;
+	}
+
+	$scope.isSelected = function(checkTab)
+	{
+		return $scope.tab === checkTab;
+	}
+});
+		
 account.controller('SecDutyController', function($scope, $http){
 /*
     $scope.duty = []; // [course, assistant, date, time, remark]
@@ -14,21 +30,21 @@ account.controller('SecDutyController', function($scope, $http){
 						});
 */
 
-
-
   $scope.duty = [
     {	
 			course: 'Prograimiranje za web', 
 			assistant: 'Andjelka Zecevic', 
 			date: '29.10.2014',
 			time: '09:00',
-			remark: '...'
+			classroom: '704',
+			remark: 'Potsetnik: iskljuciti mrezu pre pocetka ispita.'
 		},
 		{ 
 			course: 'Razvoj softvera', 
 			assistant: 'Andjelka Zecevic', 
 			date: '29.10.2014',
 			time: '09:00',
+			classroom: '704',
 			remark: 'blavla'
 		},
 		{
@@ -64,8 +80,8 @@ account.controller('SecDutyController', function($scope, $http){
 }).directive('toggle', function() {
     return function(scope, elem, attrs) {
         scope.$on('event:toggle', function() {
-            elem.slideToggle(1000); //animate({width: 'toggle'}, 3000, "swing");
-        });
+            elem.slideToggle(1000); 
+                    });
     };
 });
 
@@ -90,14 +106,14 @@ account.controller('PrimDutyController', function($scope, $http){
 				assistants: ['Andjelka Zecevic', 'Tijana Kostic'],
 				date: '29.10.2014',
 				time: '09:00',
-				remark: '...'
+				remark: ''
 			},
 			{ 
 				course: 'Razvoj softvera', 
 				assistants: ['Andjelka Zecevic', 'Mirko Petrovic'],
 				date: '29.10.2014',
 				time: '09:00',
-				remark: 'blavla'
+				remark: ''
 			},
 			{
 				course: 'Uvod u organizaciju racunara',
@@ -188,16 +204,22 @@ account.controller('CompletedDutyController', function($scope, $http){
 
 /*
     $scope.compDuty = []; //[course, date, duration]
-  
-    			$http.get('prethodna_dezurstva.php?user='+$scope.user, {responseType: 'JSON'}).
+		  
+    			$http.get('prethodna_dezurstva.php?user='+$scope.user, {responseType: 'JSON'}).  //dezurstva.php -> sva dezurstva korisnika
 						success(function(data, status, headers, config){
 							if(data!=="null")
-								$scope.compDuty = angular.fromJson(data);
+								$scope.compDutytmp = angular.fromJson(data);
 						}).
 						error(function(data, status, headers, config){
 							console.log("error: " + status);
 						});
   
+  	angular.forEach(compDutytmp, function(object){
+  		var currDate = new Date();
+  		if(object.date < currDate)
+  			this.push(object);
+  	}, compDuty);
+  	
 */
 
 $scope.compDuty = [
