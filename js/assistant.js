@@ -1,21 +1,6 @@
 var account = angular.module('accountModule', []);
 		// cuvati username ulogovanog korisnika u globalnoj promenljivoj($scope.user)
 		
-account.controller('PanelController', function($scope, $http){
-
-	$scope.tab = 1;
-	
-	$scope.selectTab = function(setTab)
-	{
-		$scope.tab = setTab;
-	}
-
-	$scope.isSelected = function(checkTab)
-	{
-		return $scope.tab === checkTab;
-	}
-});
-		
 account.controller('SecDutyController', function($scope, $http){
 /*
     $scope.duty = []; // [course, assistant, date, time, remark]
