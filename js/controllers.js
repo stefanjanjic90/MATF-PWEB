@@ -50,7 +50,6 @@ controllers.controller('newUserControler', function($scope, $http) {
   // katedre
   $http.get('json/katedre.json').success(function(data){
     $scope.katedre = angular.fromJson(data);
-    // console.log($scope.katedre);
   });
   
   $scope.predind = false;
@@ -96,53 +95,12 @@ controllers.controller('newUserControler', function($scope, $http) {
 });
 
 
-controllers.controller('ucioniceControler', function($scope, $http){
+controllers.controller('ucioniceControler', function($scope, $http) {
 
   // TODO: .json fajl koji ima spisak ucionica u bazi...
-  $scope.ucionice = [
-    {
-      i: 1,
-      ime: 'Учионица 1',
-      kapacitet: 10,
-      racunari: 3
-    },    
-    {
-      i: 2,
-      ime: 'Учионица 2',
-      kapacitet: 19,
-      racunari: 8
-    },
-    {
-      i: 3,
-      ime: 'Учионица 3',
-      kapacitet: 18,
-      racunari: 7
-    },
-    {
-      i: 4,
-      ime: 'Учионица 4',
-      kapacitet: 10,
-      racunari: 10
-    },
-    {
-      i: 5,
-      ime: 'Учионица 5',
-      kapacitet: 17,
-      racunari: 9
-    },
-    {
-      i: 6,
-      ime: 'Учионица 6',
-      kapacitet: 12,
-      racunari: 6
-    },
-    {
-      i: 7,
-      ime: 'Учионица 7',
-      kapacitet: 16,
-      racunari: 11
-    }
-  ];
+  $http.get('json/ucionice.json').success(function(data){
+    $scope.ucionice = angular.fromJson(data);
+  });
   
   $scope.ucionica = {};
   
@@ -173,4 +131,17 @@ controllers.controller('ucioniceControler', function($scope, $http){
     $scope.ucionica = {};
   }
   */
+});
+
+
+controllers.controller('rasporedControler', function($scope, $http) {
+  
+  // $scope.now = new Date();
+  // console.log("date: " + $scope.now);
+  
+  // citamo raspored iz .json fajla
+  $http.get('json/raspored.json').success(function(data){
+    $scope.raspored = angular.fromJson(data);
+  });
+  
 });

@@ -1,4 +1,4 @@
-/*TODO: sredi ovo menjanje velicine ekrana jos...*/
+/* TODO: sredi ovo menjanje velicine ekrana jos... */
 
 body 
 {
@@ -9,17 +9,18 @@ body
 .forme_dezurstava
 {
    display:block;
-   padding: 0.2%;
+   padding: 2%;
+   height: 100%;
    background-color: #eee;
    border: 1px solid #eee;
    border-radius: 5px;
-   margin-top: 0.40%;
-   overflow: visible;
+   margin-top: 4%;
    /*border-color: rgb(255,255,255);*/
  }
  
 #content
 {
+   width: 90%;
    position: static;
    padding: 0%;
    margin: 0px auto 0px auto;
@@ -50,10 +51,53 @@ body
    border-color: rgb(255,255,255);
 }
 
+.login
+{
+  width: 350px;
+  min-height: 350px;
+  margin-left: -175px;
+  margin-top: -175px;
+}
+
+.loginbody img
+{
+  height: 170px;
+  width: 170px;
+}
+
 @media screen and (max-width: 670px) 
 {
+  body
+  {
+    font-size: 90%;
+  }
+  
+  #content
+  {
+    width: 95%;
+  }
+  
+  .forme_dezurstava 
+  {
+    height: 100%;
+  }
+  
   #tab-container ul li 
   {
     width: 25%;
+  }
+  
+  .login
+  {
+    width: 300px;
+    min-height: 300px;
+    margin-left: -150px;
+    margin-top: -150px;
+  }
+
+  .loginbody img
+  {
+    height: 140px;
+    width: 140px;
   }
 }

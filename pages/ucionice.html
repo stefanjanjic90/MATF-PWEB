@@ -5,41 +5,30 @@ tab sa informacijama o ucionicama i njihovim kapacitetima:
   formulara treba da postoji dugme za cuvanje izmena.
 -->
 
-<div ng-controler="ucioniceControler">
+<div ng-controller="ucioniceControler">
 <div class="forme_dezurstava">
   <p class="imenaFormi">Учионице</p>
   
-  <div class="form-group">
-    <!--<label for="inputEmailG" class="col-lg-2 control-label">Главна мејл адреса</label>
-    <div class="col-lg-10">
-      <input type="text" class="form-control" id="inputEmailG" placeholder="Главна мејл адреса">
-    </div>-->
-    
-    <table class="table table-striped table-hover ">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Име сале</th>
-      <th>Капацитет сале</th>
-      <th>Расположиви рачунари</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-class="{active: hover}" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-repeat="u in ucionice">
-      <td>{{u.i}}</td>
-      <td><input type="text" class="form-control" ng-model="ucionica.u.ime[$index]" name="ime" placeholder= {{u.ime}} ></td>
-      <td><input type="text" class="form-control" ng-model="ucionica.u.kapacitet[$index]" name="kapacitet" placeholder= {{u.kapacitet}} ></td>
-      <td><input type="text" class="form-control" ng-model="ucionica.u.racunari[$index]" name="racunari" placeholder= {{u.racunari}} ></td>
-      <td><button type="submit" class="btn btn-primary" name="submit" ng-click="submitData()"> Промени </button></td>
-    </tr>
-  </tbody>
-</table> 
-    
-    
-    
+  <div class="table-responsive"> 
+    <table class="table table-striped table-hover">
+      <thead>
+	<tr>
+	  <th>Име сале</th>
+	  <th>Капацитет сале</th>
+	  <th>Расположиви рачунари</th>
+	  <th></th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr ng-repeat="u in ucionice">
+	  <td><input type="text" class="form-control" ng-model="ucionica.u.ime[$index]" name="ime" placeholder= {{u.ime}} ></td>
+	  <td><input type="text" class="form-control" ng-model="ucionica.u.kapacitet[$index]" name="kapacitet" placeholder= {{u.kapacitet}} ></td>
+	  <td><input type="text" class="form-control" ng-model="ucionica.u.racunari[$index]" name="racunari" placeholder= {{u.racunari}} ></td>
+	  <td><button type="submit" class="btn btn-primary" name="submit" ng-click="submitData()"> Промени </button></td>
+	</tr>
+      </tbody>
+    </table>
   </div>
-  
-  
-</div> <!-- forme dezurstva -->
+
+</div>  <!-- forme dezurstva -->
 </div>
