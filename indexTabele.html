@@ -29,10 +29,10 @@
 			<div class="forme_dezurstava" ng-show="tab ===1">
 				<table class="table table-striped" ng-controller="AppointmentsController">
 					<tr class="bold">
-						<td>Датум</td><td>Време</td><td>Резервисане учионице</td><td>Курс</td><td>Главни дежурни</td>
+						<td>Датум</td><td>Време</td><td>Резервисане учионице</td><td>Курс</td><td>Oпис</td><td>Главни дежурни</td>
 					</tr>
-					<tr ng-repeat="row in tableOfDuty">
-						<td>{{row.date}}</td><td>{{row.time}}</td><td ng-repeat="c in row.classrooms">{{c}} </td><td>{{row.course}}</td><td>{{row.assistant}}</td>
+					<tr ng-repeat="row in tableOfDuty | orderBy: row.date">
+						<td>{{row.date}}</td><td>{{row.time}}</td><td ng-repeat="c in row.classrooms">{{c}} </td><td>{{row.course}}</td><td>{{row.desc}}</td><td>{{row.assistant}}</td>
 					</tr>
 				</table>
 			</div>
@@ -43,7 +43,7 @@
 						<td>Aсистент</td><td>Број сати дежурства</td>
 					</tr>
 					<tr ng-repeat="row in totalHoursOfDuty">
-						<td>{{row.name}}</td><td>{{row.hours}}</td>
+						<td><a href="">{{row.assistant}}</a></td><td>{{row.hours}}</td>
 					</tr>
 				</table>
 			</div>
