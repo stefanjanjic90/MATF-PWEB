@@ -2,7 +2,7 @@ var app = angular.module('Application', []);
 
 app.controller('AppointmentsController', function($scope, $http){
 	
-		$scope.tableOfDuty = []; //tableOfDuty [datum, vreme, ucionice, kurs, glavni dezurni]
+		$scope.tableOfDuty = []; //tableOfDuty [datum, vreme, ucionice, kurs, opis_obaveze, glavni dezurni]
 		$scope.msg = "";
 
 		  $http.get('zakazane_obaveze.php', {responseType: 'JSON'}).success(function(data){
@@ -10,7 +10,7 @@ app.controller('AppointmentsController', function($scope, $http){
    			}).error(function(data, status, headers, config){
 							$scope.msg=status+": an error occured";	});
 							
-		$scope.tableofDuty = [{date: '29.10.2014', time: '09:00-10:00', classrooms:['uci1, uci2'], course: 'Razvoj softvera', assistant:'Neko Neko'}];
+		$scope.tableOfDuty = [{date: '29.12.2014', time: '09:00-10:00', classrooms:['uci1, uci2'], course: 'Razvoj softvera',desc: 'Opis', assistant:'Neko Neko'},{date: '29.10.2014.', time: '09:00-10:00', classrooms:['uci1, uci2'], course: 'Razvoj softvera',desc: 'Opis', assistant:'Neko Neko'}, {date: '29.02.2014.', time: '09:00-10:00', classrooms:['uci1, uci2'], course: 'Razvoj softvera',desc: 'Opis', assistant:'Neko Neko'}];
 });
 
 app.controller('HoursOnCallController', function($scope, $http){
@@ -23,7 +23,7 @@ app.controller('HoursOnCallController', function($scope, $http){
 	}).error(function(data, status, headers, config){
 							$scope.msg=status+": an error occured";	});
 
-	
+	$scope.totalHoursOfDuty = [{assistant: 'Andjelka Zecevic', hours:10},{assistant: 'Andjelka Zecevic', hours:11},{assistant: 'Andjelka Zecevic', hours:2}];
 });
 
 /*
