@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sr" xmlns="http://www.w3.org/1999/xhtml" ng-app='Application'>
+<html lang="sr" xmlns="http://www.w3.org/1999/xhtml" ng-app='App'>
 	<head>
 		<title> МАТФ Дежурства </title>
 		
@@ -10,12 +10,17 @@
 		<script type='text/javascript' src='js/angular-route.min.js'> </script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
+		
+		<script type="text/javascript" src="js/app.js"></script>
+		
 		<script type="text/javascript" src="js/controllers.js"></script>
 		<script type="text/javascript" src="js/directives.js"></script>
 		
 <!-- 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
 <!-- 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
 <!-- 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">  -->
+		
+		<link rel="shortcut icon" href="images/favicon.ico" />
 		
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/me.css">
@@ -75,8 +80,8 @@
 		<div id="tab-container">
 			<ul class="nav nav-pills nav-stacked">
 				<!-- javne stranice -->
-				<li ng-class="{active:returnTab()===1}"><a href="#p1" ng-click="setTab(1)">Почетна</a></li>
-				<li ng-class="{active:returnTab()===2}"><a href="#p2" ng-click="setTab(2)">Распоред</a></li>
+				<li ng-class="{active:returnTab()===1}"><a href="#p1" ng-click="setTab(1)">Распоред обавеза</a></li>
+				<li ng-class="{active:returnTab()===2}"><a href="#p2" ng-click="setTab(2)">Заузетост асистената</a></li>
 				
 				<!-- asist()/admin()/glavni_org() -->
 				<li ng-class="{active:returnTab()===3}" ng-show="loged() && asist()"><a href="#p3" ng-click="setTab(3)">Дежурства</a></li>

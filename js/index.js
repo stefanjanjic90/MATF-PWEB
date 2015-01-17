@@ -1,4 +1,4 @@
-var app = angular.module('Application', ['ngRoute', 'userControllers', 'userDirectives']);
+var app = angular.module('App', ['ngRoute', 'userControllers', 'userDirectives', 'Application']);
 
 app.config(
   ['$routeProvider',
@@ -6,32 +6,32 @@ app.config(
    function($routeProvider){
       $routeProvider.
 	when('/p1', {
-	  templateUrl: 'pages/pocetna.html',
-	  controller: 'pocetnaControler'
-	}).
-	when('/p2', {
-	  templateUrl: 'pages/raspored.html',
+	  templateUrl: 'pages/public/raspored.html',
 	  controller: 'rasporedControler'
-	}).
-	when('/p3', {templateUrl: 'pages/dezurstva.html'}).
-	when('/p4', {
-	  templateUrl: 'pages/info.html',
+	})
+	.when('/p2', {
+	  templateUrl: 'pages/public/zauzetost.html',
+	  controller: 'HoursOnCallController'
+	})
+	.when('/p3', {templateUrl: 'pages/asistent/dezurstva.html'})
+	.when('/p4', {
+	  templateUrl: 'pages/administrator/info.html',
 	  controller: 'infoControler'
-	}).
-	when('/p5', {
-	  templateUrl: 'pages/newuser.html',
+	})
+	.when('/p5', {
+	  templateUrl: 'pages/administrator/newuser.html',
 	  controller: 'newUserControler'
-	}).
-	when('/p6', {
-	  templateUrl: 'pages/deleteuser.html',
+	})
+	.when('/p6', {
+	  templateUrl: 'pages/administrator/deleteuser.html',
 	  controller: 'deleteUserControler'
-	}).
-	when('/p7', {templateUrl: 'pages/reset.html'}).
-	when('/p8', {
-	  templateUrl: 'pages/ucionice.html',
+	})
+	.when('/p7', {templateUrl: 'pages/administrator/reset.html'})
+	.when('/p8', {
+	  templateUrl: 'pages/administrator/ucionice.html',
 	  controller: 'ucioniceControler'
-	}).
-	otherwise({redirectTo: '/'});
+	})
+	.otherwise({redirectTo: '/'});
    }
   ]
 );
@@ -61,11 +61,10 @@ app.controller('indexControler', function($scope, $http) {
     return $scope.tab;
   }
   
-  
   // u kom modu se korisnik uloguje
   $scope.asistent = false;
   $scope.administrator = false;
-  $scope.glavni_organizator = false;
+  $scope.koordinator = false;
   
   // vracamo mod za svakog
   $scope.asist = function() {
@@ -74,8 +73,8 @@ app.controller('indexControler', function($scope, $http) {
   $scope.admin = function() {
     return $scope.administrator;
   }
-  $scope.glavni_org = function() {
-    return $scope.glavni_organizator;
+  $scope.koord = function() {
+    return $scope.koordinator;
   }
   
   $scope.setVisible = function(arg) {
@@ -95,7 +94,7 @@ app.controller('indexControler', function($scope, $http) {
     $scope.loginData = {};
     $scope.asistent = false;
     $scope.administrator = false;
-    $scope.glavni_organizator = false;
+    $scope.koordinator = false;
   }
   
   $scope.login = function() {
@@ -115,6 +114,7 @@ app.controller('indexControler', function($scope, $http) {
       $scope.visible = false;
       $scope.logedIn = true;
       $scope.administrator = true; // test primer
+      $scope.koordinator = true; // test primer
       $scope.user = angular.fromJson(data);
       
       // TODO: mod za logovanje
@@ -134,7 +134,7 @@ app.controller('indexControler', function($scope, $http) {
     
     $scope.asistent = false;
     $scope.administrator = false;
-    $scope.glavni_organizator = false;
+    $scope.koordinator = false;
   } // logout()
 
 });

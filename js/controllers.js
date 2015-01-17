@@ -1,13 +1,5 @@
 var controllers = angular.module('userControllers', []);
 
-controllers.controller('pocetnaControler', function($scope, $http) {
-  
-  // pocetna.html controller
-  
-});
-
-
-
 controllers.controller('infoControler', function($scope, $http) {
   
   $scope.infoData = {};
@@ -195,7 +187,6 @@ controllers.controller('deleteUserControler', function($scope, $http) {
 
 controllers.controller('ucioniceControler', function($scope, $http) {
 
-  // TODO: .json fajl koji ima spisak ucionica u bazi...
   $http.get('json/ucionice.json').success(function(data){
     $scope.ucionice = angular.fromJson(data);
   });
@@ -235,6 +226,9 @@ controllers.controller('ucioniceControler', function($scope, $http) {
     $scope.ucionica.racunari = racunari;
    
     $scope.setForm(true);
+    
+    $scope.showMsg = false;
+    $scope.err = false;
     
     console.log("promeni");
   }
@@ -277,12 +271,55 @@ controllers.controller('ucioniceControler', function($scope, $http) {
 
 controllers.controller('rasporedControler', function($scope, $http) {
   
-  // $scope.now = new Date();
-  // console.log("date: " + $scope.now);
-  
   // citamo raspored iz .json fajla
   $http.get('json/raspored.json').success(function(data){
     $scope.raspored = angular.fromJson(data);
   });
   
+  // poruka o uspesnosti i promenljiva za njen prikaz
+  $scope.msg = "";
+  $scope.showMsg = false;
+  
+  $scope.success = function() {
+    return $scope.showMsg;
+  }
+  $scope.successSet = function(arg) {
+    $scope.showMsg = arg;
+  }
+  
+  // u slucaju greske
+  $scope.err = false;
+  
+  $scope.error = function() {
+    return $scope.err;
+  }
+  
+  $scope.otkaziObavezu = function(id) {
+    
+    var obaveza = angular.toJson(id);
+    
+    // TODO: trazi obaveze ponovo radi ispisa bez obrisane obaveze...
+    
+    $http({
+      method: 'post',
+      url: 'test.php',
+      data: obaveza,
+      responseType: 'JSON',
+      headers: {
+	'Content-Type': 'application/json; charset=UTF-8'
+      }
+    })
+    .success(function(data, status, headers, config) {
+      console.log(data);
+      $scope.msg = "Успешно отказана обавеза!";
+      $scope.showMsg = true;
+    })
+    .error(function(data, status, headers, config) {
+      console.log("error");
+      $scope.msg = "Дошло је до грешке приликом отказивања обавезе. Молимо вас покушајте поново.";
+      $scope.err = true;
+    });
+
+  }
+    
 });
