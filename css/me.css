@@ -18,6 +18,8 @@ body
    left: -126px;
 }
 
+
+
 #main-container
 {
    margin: 0px auto 0px auto;
@@ -230,3 +232,18 @@ textarea
 	resize: none;
 }
 
+.tableName 
+{
+		margin-top: 10px;
+		margin-bottom: 10px;
+}
+
+.duty-old
+{
+	background-color:#fcf8e3;
+}
+
+.duty-new
+{
+	background-color:#dff0d8;
+}

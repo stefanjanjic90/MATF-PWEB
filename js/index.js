@@ -36,6 +36,7 @@ app.config(
   ]
 );
 
+
 app.controller('indexControler', function($scope, $http) {
   
   // podaci o korisniku kad se uloguje...
@@ -137,6 +138,7 @@ app.controller('indexControler', function($scope, $http) {
   } // logout()
 
 });
+
 
 
 

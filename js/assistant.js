@@ -15,6 +15,8 @@ account.controller('SecDutyController', function($scope, $http){
 						});
 */
 
+
+
   $scope.duty = [
     {	
 			course: 'Prograimiranje za web', 
@@ -139,6 +141,14 @@ account.controller('NewDutyController', function($scope, $http){
 
 */
 
+$scope.setSort = function(order)
+{
+	if(order === 1)
+		$scope.orderByDate = true;
+	else
+		$scope.orderByDate = false;
+}
+
 $scope.departure = [
 	'Информатика',
 	'Рачунарство и информатика',
@@ -177,12 +187,90 @@ $scope.classrooms = [
 
 $scope.assistants = [
 	'Mirko Spasic',
-	'Ana Spasic',
-	'...'
+	'Ana Spasic'
 ];
 
-  
+
+
+
+$scope.selectedAssistant = [];
+
+$scope.addAssistant = function(assistant)
+{
+	  $scope.selectedAssistant.push(assistant);
+	  var index = $scope.assistants.indexOf(assistant);
+	  $scope.assistants.splice(index, 1);
+}
+
+$scope.removeAssistant = function(index)
+{
+	$scope.assistants.push($scope.selectedAssistant[index]);
+	$scope.selectedAssistant.splice(index,1);
+}
+
+
+
+
+ $scope.preferedAssistant = [];
+
+ $scope.checkedClassrooms = [];
+
+  $scope.isChecked = function(item, mod){
+      var match = false;
+      if(mod === 'c')
+		  {  
+		  	for(var i=0 ; i < $scope.checkedClassrooms.length; i++) {
+		      if($scope.checkedClassrooms[i] === item){
+		        match = true;
+		      }
+		    }
+		   }
+		   else
+		   {  
+		  	for(var i=0 ; i < $scope.preferedAssistant.length; i++) {
+		      if($scope.preferedAssistant[i] === item){
+		        match = true;
+		      }
+		    }
+		   }
+		   
+      return match;
+  };
+
+  $scope.sync = function(bool, item, mod){
+		if(mod === 'c')
+		{
+		  if(bool){
+		    // add item
+		    $scope.checkedClassrooms.push(item);
+		  } else {
+		    // remove item
+		    for(var i=0 ; i < $scope.checkedClassrooms.length; i++) {
+		      if($scope.checkedClassrooms[i] === item){
+		        $scope.checkedClassrooms.splice(i,1);
+		      }
+		    }      
+		  }
+		}
+		else
+		{
+		  if(bool){
+		    // add item
+		    $scope.preferedAssistant.push(item);
+		  } else {
+		    // remove item
+		    for(var i=0 ; i < $scope.preferedAssistant.length; i++) {
+		      if($scope.preferedAssistant[i] === item){
+		        $scope.preferedAssistant.splice(i,1);
+		      }
+		    }      
+		  }
+		}
+	};
+
 });
+
+
 
 
 account.controller('CompletedDutyController', function($scope, $http){
