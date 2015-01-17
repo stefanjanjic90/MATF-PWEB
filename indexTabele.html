@@ -14,53 +14,7 @@
 	</head>
 	
 	<body>
-	<div id="content" ng-controller="indexControler">
-	
-	<!-- forma za logovanje -->
-	<div class="loginform" ng-show="returnVisible()">
-		<div class="login">
-		
-		  <div class="logintop">
-		    <div class="loginclose">
-		      <button type="button" name="closeButoon" class="close" data-dismiss="modal" aria-hidden="true" ng-click="setVisible(false)">x</button>
-		    </div>
-		    
-		    <div>
-		    </div>
-		  </div>
-		    
-		  <div class="loginbody">
-				  <img src="images/matf.jpg" alt="МАТФ" />
-				  <form class="form-horizontal" name="loginform">
-				    <fieldset>
-				      <!-- <legend>Legend</legend>  -->
-	
-				      <div class="form-group">
-					<label for="inputUN" class="col-lg-4 control-label">Корисничко име</label>
-					<div class="col-lg-8">
-					  <input type="text" class="form-control" name="inputUN" ng-model="loginData.username" placeholder="Корисничко име" required>
-					</div>
-				      </div>
-				      
-				      <div class="form-group">
-					<label for="inputP" class="col-lg-4 control-label">Шифра</label>
-					<div class="col-lg-8">
-					  <input type="password" class="form-control" name="inputP" ng-model="loginData.password" placeholder="Шифра" required>
-					</div>
-				      </div>
-				      
-				      <div class="form-group">
-					<div class="col-lg-10 col-lg-offset-2">
-					    <button type="reset" class="btn btn-default" ng-click="resetData()" name="reset">Поништи</button>
-					    <button type="submit" class="btn btn-primary" ng-disabled="loginform.$invalid" ng-click="login()" name="submit">Пошаљи</button>
-					</div>
-				      </div>
-				    </fieldset>
-				    </form>
-		    </div> <!-- loginbody -->
-		  </div> <!-- login -->
-		</div>  <!-- loginform -->
-	
+	<div id="content">
 	
 		<div id="tab-container">	
 			<section ng-init="tab = 1 ">
