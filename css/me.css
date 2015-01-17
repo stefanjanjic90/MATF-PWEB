@@ -217,3 +217,18 @@ textarea
 	resize: none;
 }
 
+.tableName 
+{
+		margin-top: 10px;
+		margin-bottom: 10px;
+}
+
+.duty-old
+{
+	background-color:#fcf8e3;
+}
+
+.duty-new
+{
+	background-color:#dff0d8;
+}
