@@ -100,10 +100,8 @@
 				</div>
 				 
 				 <div id="log_out" ng-show="loged()">
-				    <a href="" id="imeIprezime"> {{user.username}} </a>
-				    <button class="btn btn-primary" type="button" ng-click="logout()">
-					Одјава 
-				    </button>
+				    <a href="" id="imeIprezime"> {{whoAmI()}} </a>
+				    <button class="btn btn-primary" type="button" ng-click="logout()"> Одјава </button>
 				</div>
 			</div>
 			

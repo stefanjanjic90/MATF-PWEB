@@ -26,12 +26,12 @@ raspored zakazanih obaveza
       <table class="table table-striped table-hover">
         <thead ng-init="sort='datum'; reverse=false">
 	  <tr>
-            <th ng-click="sort='datum'; reverse=!reverse">Датум</th>
-            <th ng-click="sort='vreme'; reverse=!reverse">Време</th>
-            <th ng-click="sort='ucionice'; reverse=!reverse">Резервисане учионице</th>
-            <th ng-click="sort='opis'; reverse=!reverse">Опис обавезе</th>
-            <th ng-click="sort='glavni_dezurni'; reverse=!reverse">Главни дежурни</th>
-            <th>Опције</th> <!-- loged(), koord() -> index.js indexControler; ng-show="loged() && koord()" -->
+            <th ng-click="sort='datum'; reverse=!reverse" title="Кликните за сортирање по датуму.">Датум</th>
+            <th ng-click="sort='vreme'; reverse=!reverse" title="Кликните за сортирање по времену.">Време</th>
+            <th ng-click="sort='ucionice'; reverse=!reverse" title="Кликните за сортирање по резервисаним учионицама.">Резервисане учионице</th>
+            <th ng-click="sort='opis'; reverse=!reverse" title="Кликните за сортирање по обавезама.">Опис обавезе</th>
+            <th ng-click="sort='glavni_dezurni'; reverse=!reverse" title="Кликните за сортирање по главном дежурном.">Главни дежурни</th>
+            <th ng-show="loged() && koord()">Опције</th> <!-- loged(), koord() -> index.js indexControler;  -->
 	  </tr>
 	</thead>
 	<tbody>
@@ -41,7 +41,7 @@ raspored zakazanih obaveza
             <td>{{ aktivnost.ucionice }}</td>
             <td>{{ aktivnost.opis }}</td>
             <td>{{ aktivnost.glavni_dezurni }}</td>
-            <td><button type="submit" class="btn btn-primary btn-sm" name="submit" ng-click="otkaziObavezu(aktivnost.id)"> Откажи обавезу </button></td> <!-- ng-show="loged() && koord()" -->
+            <td ng-show="loged() && koord()"><button type="submit" class="btn btn-primary btn-sm" name="submit" ng-click="otkaziObavezu(aktivnost.id)"> Откажи обавезу </button></td> <!-- ng-show="loged() && koord()" -->
 	  </tr>
 	</tbody>
       </table>
