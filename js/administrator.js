@@ -1,8 +1,8 @@
-// main controller
+// kontroleri za administratora
 
-var controllers = angular.module('userControllers', ['publicPagesModule', 'administratorModule', 'koordinatorModule', 'accountModule']);
-/*
-controllers.controller('infoControler', function($scope, $http) {
+var administrator = angular.module('administratorModule', []);
+
+administrator.controller('infoControler', function($scope, $http) {
   
   $scope.infoData = {};
   $scope.currentData = {};
@@ -88,7 +88,7 @@ controllers.controller('infoControler', function($scope, $http) {
 
 
   
-controllers.controller('newUserControler', function($scope, $http) {
+administrator.controller('newUserControler', function($scope, $http) {
   
   // katedre
   $http.get('json/katedre.json').success(function(data){
@@ -113,9 +113,6 @@ controllers.controller('newUserControler', function($scope, $http) {
     return $scope.err;
   }
  
- 
- 
-  // TODO: submit...
   $scope.formData = {};   
   
   $scope.submitData = function() {
@@ -128,7 +125,7 @@ controllers.controller('newUserControler', function($scope, $http) {
       data: formDataJson,
       responseType: 'JSON',
       headers: {
-	  'Content-type': 'application/json; charset=utf-8' // TODO: proveri i sredi kodiranje...
+	  'Content-type': 'application/json; charset=utf-8'
 	}
       }
     )
@@ -154,7 +151,8 @@ controllers.controller('newUserControler', function($scope, $http) {
 });
 
 
-controllers.controller('deleteUserControler', function($scope, $http) {
+
+administrator.controller('deleteUserControler', function($scope, $http) {
   
   $scope.korisnici = {};
   $http.get('json/korisnici.json').success(function(data) {
@@ -187,7 +185,7 @@ controllers.controller('deleteUserControler', function($scope, $http) {
   
 });
 
-controllers.controller('ucioniceControler', function($scope, $http) {
+administrator.controller('ucioniceControler', function($scope, $http) {
 
   $http.get('json/ucionice.json').success(function(data){
     $scope.ucionice = angular.fromJson(data);
@@ -271,58 +269,60 @@ controllers.controller('ucioniceControler', function($scope, $http) {
 });
 
 
-controllers.controller('rasporedControler', function($scope, $http) {
+
+administrator.controller('resetControler', function($scope, $http) {
   
-  // citamo raspored iz .json fajla
-  $http.get('json/raspored.json').success(function(data){
-    $scope.raspored = angular.fromJson(data);
-  });
+  // TODO; sredi ispis za ovoaj init(); da li ti treba?
   
-  // poruka o uspesnosti i promenljiva za njen prikaz
-  $scope.msg = "";
-  $scope.showMsg = false;
+  // $scope.asistenti = {};
   
-  $scope.success = function() {
-    return $scope.showMsg;
-  }
-  $scope.successSet = function(arg) {
-    $scope.showMsg = arg;
+  $scope.init = function() {
+    $http.get('json/reset.json').success(function(data) {
+      $scope.asistenti = angular.fromJson(data);
+    });
   }
   
-  // u slucaju greske
-  $scope.err = false;
+  // kad resetujemo cuvamo promene
+  $scope.forSave= false;
   
-  $scope.error = function() {
-    return $scope.err;
-  }
+  // da li smo resetovali podatke
+  $scope.resetovano = false;
   
-  $scope.otkaziObavezu = function(id) {
+  // reset - kojim se vrednosti postavljaju na ocekivane u skladu sa uputstvom iz propozicija
+  $scope.reset = function() {
     
-    var obaveza = angular.toJson(id);
-    
-    // TODO: trazi obaveze ponovo radi ispisa bez obrisane obaveze...
+    console.log("reset()");
     
     $http({
       method: 'post',
       url: 'test.php',
-      data: obaveza,
+      data: $scope.asistenti,
       responseType: 'JSON',
       headers: {
 	'Content-Type': 'application/json; charset=UTF-8'
       }
     })
     .success(function(data, status, headers, config) {
-      console.log(data);
-      $scope.msg = "Успешно отказана обавеза!";
-      $scope.showMsg = true;
+      // $scope.asistenti = angular.fromJson(data);
+      
+      // resetujemo podatke
+      $scope.init();
+      
+      // omoguci cuvanje izmena
+      $scope.forSave = true;
+      
+      // resetovali smo podatke
+      $scope.resetovano = true;
     })
     .error(function(data, status, headers, config) {
-      console.log("error");
-      $scope.msg = "Дошло је до грешке приликом отказивања обавезе. Молимо вас покушајте поново.";
-      $scope.err = true;
+      $scope.forSave = false;
     });
-
   }
-    
+  
+  // sacuvaj izmene - kojim se vrednosti dobijene u prethodnom koraku mogu sacuvati u bazi podataka
+  $scope.save = function() {
+    // TODO: ...
+    console.log("save()");
+  }
+  
 });
-*/

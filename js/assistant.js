@@ -1,3 +1,5 @@
+// kontroleri za asistenta
+
 var account = angular.module('accountModule', []);
 		// cuvati username ulogovanog korisnika u globalnoj promenljivoj($scope.user)
 		
