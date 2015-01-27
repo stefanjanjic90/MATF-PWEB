@@ -105,7 +105,8 @@ p.imenaFormi {
 #grafZamena
 {
 	float:right;
-	color: 337ab7;
+	color: #337ab7;
+
 }
 
 .napomena
@@ -167,7 +168,7 @@ p.imenaFormi {
   display: block;
 }
 
-.loginclose
+.loginzamclose
 {
   float: right;
   margin-bottom: 10px;
@@ -216,11 +217,6 @@ p.imenaFormi {
     top: 50%;
 }
 
-#zamena_asistenti 
-{
-	display:  none;
-}
-
 
 footer
 {
@@ -228,10 +224,6 @@ footer
 }
 
 
-textarea
-{
-	resize: none;
-}
 
 .tableName 
 {
@@ -247,4 +239,37 @@ textarea
 .duty-new
 {
 	background-color:#dff0d8;
+}
+
+.malaGrupa
+{
+	margin: 10px;
+	color: #555;
+}
+
+.divKomentar
+{
+	margin: 20px;
+}
+
+
+.grupa
+{
+	margin-left: 128px;
+	margin-bottom: 20px;
+	padding: 26px;
+	border: 1px solid gray;
+	border-radius: 5px;
+	width: 70%;
+}
+
+.tabela_zamena
+{
+	list-style: none;
+	display:  none;
+}
+
+.btnSave
+{
+	margin-left: 226px;
 }
