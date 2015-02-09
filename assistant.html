@@ -3,13 +3,18 @@
 	<head>
 		<title> MАТФ Дежурства </title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8;" />
-				<script type="text/javascript" src="js/jquery-1.11.2.min.js"> </script>
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"> </script>
 		<script type="text/javascript" src="js/angular.min.js"></script>
 		<script type="text/javascript" src="js/angular.js"></script>
+		<script type='text/javascript' src='js/angular-route.min.js'> </script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		
 		<script type="text/javascript" src="js/assistant.js"></script>
-		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> 
-		<link rel="stylesheet" type="text/css" href="css/me.css"> 
+		
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/me.css">
+		
+	
 	</head>
 	
 	<body>
@@ -41,168 +46,237 @@
 			  	<div class="forme_dezurstava" ng-controller="SecDutyController ">
 						<p class="imenaFormi"> Споредна дежурства </p>
 						<div class="kartica" ng-repeat="dezurstvo in duty">
-							<div class = "header" >
-								<span> <b> {{ dezurstvo.course }} </b></span> 
-							<a title="Покушај замену" href="#" ng-click="toggle()"><span id="grafZamena" class="glyphicon glyphicon-refresh"></span></a><br />
+							<div class = "header" >															
+								<a title="Покушај замену" href="" ng-click="toggle($index)"><span id="grafZamena" class="glyphicon glyphicon-refresh"></span></a>
+								<span> <b> {{ dezurstvo.course }} </b> </span> <br/>
 								<span> {{dezurstvo.assistant}} </span> 
 								<br/>
-									<ul id="zamena_asistenti" toggle>
-										<li ng-repeat = "zamena in possibleRotate"><a> {{zamena}} </a></li>
+									<ul id="zamena_asistenti{{$index}}" class="tabela_zamena">
+										<li ng-repeat = "zamena in possibleRotate">
+											<input type="checkbox" ng-change="sync(bool, zamena, 'r')" ng-model="bool" ng-checked="isChecked(zamena, 'r')"> {{zamena}}
+										</li>
+										<br/>								
+										<input type="button" class="btn btn-primary" value="Пошаљи" ng-disabled="!checkedReplace.length" ng-click="">
 									</ul> 
 							</div>
 							<div class = "bodyCard">
 								<span> Датум: {{dezurstvo.date }}, {{dezurstvo.time}} </span> <br/>
 								<span> Учионица: {{dezurstvo.classroom}} </span> <br/>
-								<span> Напомена:</span> <br /><textarea class="napomena" rows="1" disabled>{{dezurstvo.remark}}</textarea> 
+								<span> Напомена:</span> <br/> <textarea class="napomena" rows="1" disabled>{{dezurstvo.remark}}</textarea> 
 							</div> 
 						</div>   <!-- div kartica -->
 					</div>	<!-- div sporedna forma dezurstva -->
 					
-			
-					<div class="forme_dezurstava" ng-controller="PrimDutyController ">
+								<div class="forme_dezurstava" ng-controller="PrimDutyController ">
 						<p class="imenaFormi"> Главна дежурства </p>
 						
 						<div class="kartica" ng-repeat="dezurstvo in duty" >
-						
-						 <div class="tabbable">
+						<section  ng-init="tab$index = 1"> 
 						  <ul class="nav nav-tabs">
-						    <li class="active"><a href="#1" data-toggle="tab">Основно</a></li>
-						    <li><a href="#2" data-toggle="tab">Поруке</a></li>
-						    <li><a href="#3" data-toggle="tab">Коментари</a></li>
+						    <li ng-class="{active: tab$index===1}"><a href ng-click="tab$index=1">Основно</a></li>
+						    <li ng-class="{active: tab$index===2}"><a href ng-click="tab$index=2">Групе</a></li>
+						    <li ng-class="{active: tab$index===3}"><a href ng-click="tab$index=3">Коментари</a></li>
 						  </ul>
-						  <div class="tab-content">
-						   <div class="tab-pane active" id="1">  
-								 	<div class = "header">
-									<span> <b> {{dezurstvo.course}} </b></span>
-									<button title="Откажи обавезу" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><br/>
-									</div>
-								<div class = "bodyCard">
-									<span> Датум: {{ dezurstvo.data }}, {{ dezurstvo.date }}h </span> <br/>
-									<span> Учионице: {{ dezurstvo.classroom }} </span> <br/>
-									<span> Асистенти:</span>
-									<ol>
-										<li ng-repeat="asistent in dezurstvo.assistants"><a href="">{{ asistent }}</a></li>
-									</ol>
-									<span> Напомена: {{ dezurstvo.remark }} </span>
-									<a title="Додај напомену" href="#" ><span id="grafDodaj" class="glyphicon glyphicon-plus"></span></a>
-								</div>
-						   </div>
-						   <div class="tab-pane" id="2"> .. </div>
-						   <div class="tab-pane" id="3">  ..</div>
-						  </div>
+						<section>
+
+						<!-- tab osnovno -->
+						<div class="tab-pane active" ng-show="tab$index===1">  
+							<div class = "header">
+								<button title="Откажи обавезу" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<span> <b> {{dezurstvo.course}} </b></span>
+							</div>
+							<div class = "bodyCard">
+								<span> Датум: {{ dezurstvo.date }}, {{ dezurstvo.timeSum }}h </span> <br/>
+							</div>
+						</div>						   
+					
+						<!-- tab grupe -->
+						<div class="tab-pane" ng-show="tab$index===2" ng-repeat="grupa in dezurstvo.groups"> 
+							<div class="{{bgColors[$index%3]}} malaGrupa" >
+						  	<label>{{grupa.name}}</label> ({{grupa.start}}-{{grupa.end}}h)
+						   	<div> Учионице: <span ng-repeat="room in grupa.classrooms">{{room}} </span></div>
+						   	<div> Асистенти: 
+						   		<ul>
+						   			<li ng-repeat="a in grupa.assistans">{{a}}</li>
+						   		</ul>
+						   	</div>
+							</div>
 						</div>
-						
-						 
+						   
+						<!-- tab komentari -->
+							<div class="tab-pane" ng-show="tab$index===3">
+								<div class="divKomentar">
+									<textarea rows="4" cols="31"  placeholder="Постави коментар на нивоу целокупне активности"> </textarea>
+									<input type="submit" class="btn btn-primary" value="Постави коментар" ng-click="saveComment($index)">
+								</div>
+						 	</div>
+
+  
 						</div>  <!-- div kartica -->
-					</div> <!-- forma dezirstva glavna -->
+					</div> <!-- div glavna dezurstva -->
+				</div> <!-- kraj tab-a dezurstvo -->
 
-				</div> <!-- Kraj div-a dezurstvo -->
-
-<!-- tab za najavljivanje obaveze: -->
-
+				<!-- tab za najavljivanje obaveze: -->
 				<div ng-show="tab === 2">
 					<div class="forme_dezurstava" ng-controller="NewDutyController">
 						<p class="imenaFormi"> Заказивање обавезa</p>
 				
 						<form name="fZakazivanje" class="form-horizontal">
 	      		<fieldset>
+			      	
+			      <div class="form-group">
+							<label class="col-lg-2 control-label">Oбавезa</label>
+							<div class="col-lg-8">
+								<input type="text" class="form-control" name="opisObaveze" ng-model="opisObaveze" placeholder="Опис обавезе" ng-required="true">
+							</div>
+						</div>
+			      	
+			      <div class="form-group" >
+							<label  class="col-lg-2 control-label">Број група</label>
+							<div class="col-lg-8">
+							<input type="number" min="0" class="form-control" name="brGrupa" ng-model="brGrupa"  ng-required="true" >
+							</div>
+						</div>
 	
-
-						<div class="form-group">
-							<label for="selectSmer" class="col-lg-2 control-label">Група/Смер</label>
-							<div class="col-lg-10">
-								<select class="form-control" ng-model="smer" ng-required="true">
-									<option selected="selected"></option>
-									<option ng-repeat="smer in departure"> {{smer}} </option>
-								</select>
-							</div>
-						</div>
-
-
-						<div class="form-group" >
-							<label for="selectPredmet" class="col-lg-2 control-label">Предмет</label>
-							<div class="col-lg-10">
-								<select class="form-control" ng-model="predmet" ng-required="true">
-									<option selected="selected"></option>
-									<option ng-repeat="predmet in course"> {{predmet}} </option>
-								</select>
-							</div>
-						</div>
-						
-						
-						<div class="form-group">
-							<label for="selectDatum" class="col-lg-2 control-label">Датум одржавања</label>
-							<div class="col-lg-10">								
-								<div class='input-group date' id='datetimepicker5'>
-									<input type='text' class="form-control" data-date-format="YYYY/MM/DD" placeholder="Датум" ng-model="datum" ng-required="true">
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar"></span>
-									</span>
+				    <div ng-repeat="grupa in returnArray(brGrupa)" class="{{bgColors[$index%3]}} grupa"><!-- div za pojedinacnu grupu -->
+							<form name="fGrupa">
+							<div class="form-group"> <!-- naziv grupe -->
+							<label class="col-lg-2 control-label">Група</label>
+								<div class="col-lg-8">
+									<input type="text" class="form-control" name="imeGrupe" ng-model="imeGrupe" placeholder="Група {{$index+1}}" ng-required="true">
+								</div>
+							</div> 
+			      	
+			      	<div class="form-group"> <!-- datum  -->
+							<label class="col-lg-2 control-label">Предлог датума</label>
+								<div class="col-lg-8">
+									<div class="radio" ng-required="true">
+										<label>
+											<input type="radio" name="datumRadio" ng-model="datumRadio" value=false> У колоквијумској недеље
+										</label>
+										<label>
+											<input type="radio" name="datumRadio" ng-model="datumRadio" value=true> Тачан датум
+										</label>
+									</div>
+								</div>
+							</div>	
+			      	
+			      	<div ng-show="datumRadio"><!-- div se prikazuje ako je izabran tacan datum -->
+			      		
+			      	<div class="form-group"> <!-- datepicker -->
+								<label class="col-lg-2 control-label">Датум</label>
+								<div class="col-lg-8">								
+									<div class='input-group date' id='datepicker'>
+										<input type='text' class="form-control" data-date-format="YYYY/MM/DD" placeholder="Датум" ng-model="datum">
+										<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+									</div>
 								</div>
 							</div>
-						</div>
-						
-						
-						<div class="form-group">
-							<label for="timepicker1" class="col-lg-2 control-label">Време(од-до)</label>							
-							<div class='col-lg-5'>
-              	  <div class='input-group date' id='timepicker1'>
-                    <input type='text' class="form-control" ng-model="vremeOd" placeholder="Од" ng-required="true">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
-                    </span>
-           	 			</div>
-        			</div> 
-        			<div class='col-lg-5'>
-              	  <div class='input-group date' id='timepicker2'>
-                    <input type='text' class="form-control" ng-model="vremeDo" placeholder="До" ng-required="true">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
-                    </span>
-           	 			</div>
-        			</div>
-						</div>
-						
-						
-						<div class="form-group">
-							<label  class="col-lg-2 control-label">Потребне учионице</label>
-							<div class="col-lg-10">
-								<label class="checkbox-inline" ng-repeat="ucionica in classrooms">
-									<input type="checkbox" ng-change="sync(bool, ucionica, 'c')" ng-model="bool" ng-checked="isChecked(ucionica, 'c')"> {{ucionica}}
-								</label>
+			      		
+			      	<div class="form-group"> <!-- timepicker obaveze-->						
+							<label class="col-lg-2 control-label">Термин обавезе</label>	
+								<div class='col-lg-4'>
+				          <div class='input-group date' id='timepicker1'>
+				            <input type='text' class="form-control" ng-model="startObaveze" placeholder="Од" >
+				           <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+				          </div>
+				    		</div>
+				    		<div class='col-lg-4'>
+				          <div class='input-group date' id='timepicker2'>
+				            <input type='text' class="form-control" ng-model="endObaveze" placeholder="До" >
+				           	<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+				          </div>
+				    		</div> 
+			      	</div>
+			      		
+			      		
+			      	<div class="form-group"> <!-- timepicker rezervacije-->						
+							<label class="col-lg-2 control-label">Термин резервације</label>	
+								<div class='col-lg-4'>
+				          <div class='input-group date' id='timepicker1'>
+				            <input type='text' class="form-control" ng-model="startRez" placeholder="Од" >
+				           <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+				          </div>
+				    		</div>
+				    		<div class='col-lg-4'>
+				          <div class='input-group date' id='timepicker2'>
+				            <input type='text' class="form-control" ng-model="endRez" placeholder="До" >
+				           	<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+				          </div>
+				    		</div> 
+			      	</div>	
+			      		
+			      	</div> <!-- kraj diva koji se prikazuje kada je izabran tacan datum -->
+
+        			<div class="form-group"> <!-- ucionice -->
+								<label class="col-lg-2 control-label">Потребне учионице</label>
+								<div class="col-lg-8">
+									<div class="radio">
+									<label ng-repeat="ucionica in classrooms">
+										<input type="checkbox" ng-change="sync(bool, ucionica, 'c')" ng-model="bool" ng-checked="isChecked(ucionica, 'c')"> {{ucionica}}
+									</label>
+									</div>
+								</div>
 							</div>
-						</div>
-						
-						
-						<div class="form-group">
+			      
+			      	<div class="form-group"> <!-- rad na racunaru  -->
+							<label class="col-lg-2 control-label">Рад на рачунару</label>
+								<div class="col-lg-8">
+									<div class="radio">
+										<label>
+											<input type="radio" name="onComputer" ng-model="onComputer" value=false> да
+										</label>
+										<label>
+											<input type="radio" name="onComputer" ng-model="onComputer" value=true> не
+										</label>
+									</div>
+								</div>
+							</div>	
+			      	
+			      	<div class="form-group"> <!-- broj  studenata -->
 							<label  class="col-lg-2 control-label">Број студената</label>
-							<div class="col-lg-10">
-		    				<input type="text" class="form-control" name="brStudenata" ng-model="brStudenata" placeholder="Очекивани број студената" ng-required="true" ng-pattern="/^[0-9]+$/">
-		  				</div>
-						</div>
-						
-						
-						<div class="form-group">
-							<label  class="col-lg-2 control-label">Број асистената</label>
-							<div class="col-lg-10">
-		    				<input type="text" class="form-control" name="brAsistenata" ng-model="brAsistenata" placeholder="Број потребних асистената" ng-required="true" ng-pattern="/^[0-9]+$/">
-		  				</div>
-						</div>
-						
-						
-						<div class="form-group ">
-							<label  class="col-lg-2 control-label">Преферирани асистенти</label>
-							<div class="col-lg-10">
-								<label class="checkbox-inline" ng-repeat="asistent in assistants" >
-									<input type="checkbox" ng-change="sync(bool, asistent, 'a')" ng-model="bool" ng-checked="isChecked(asistent,'a')"> {{asistent}}
-								</label>
+								<div class="col-lg-8">
+		    					<input type="text" class="form-control" name="brStudenata" ng-model="brStudenata" placeholder="Очекивани број студената" ng-required="true" ng-pattern="/^[0-9]+$/">
+		  					</div>
 							</div>
-						</div>
+							
+							<div class="form-group"> <!-- broj asistenata -->
+							<label  class="col-lg-2 control-label">Број асистената</label>
+								<div class="col-lg-8">
+		    					<input type="text" class="form-control" name="brAsistenata" ng-model="brAsistenata" placeholder="Број потребних асистената" ng-required="true" ng-pattern="/^[0-9]+$/">
+		  					</div>
+							</div>
+			      
+			      	<div class="form-group"> <!-- napomena za koordinatora -->
+							<label class="col-lg-2 control-label">Напомена</label>
+								<div class="col-lg-8">
+									<input type="text" class="form-control" name="napomenaK" ng-model="napomenaK" placeholder="Напомена за координатора">
+								</div>
+							</div> 
+
+			      	<div class="form-group"> <!-- napomena za asistenta -->
+							<label class="col-lg-2 control-label">Напомена</label>
+								<div class="col-lg-8">
+									<input type="text" class="form-control" name="napomenaA" ng-model="napomenaA" placeholder="Напомена за асистенте">
+								</div>
+							</div>
+							 
+							<div class="form-group">
+		  					<div class="col-lg-10 col-lg-offset-2">
+		    					<input type="submit" class="btnSave btn btn-default" value="Сачувај">
+		  					</div>
+							</div>
+			      </form>
+			      </div> <!-- kraj diva za pojedinacnu grupu -->
+						
+			      <br/>
 						<div class="form-group">
 		  				<div class="col-lg-10 col-lg-offset-2">
 		    				<input type="reset" class="btn btn-default" value="Поништи" />
 		    				<input type="submit" class="btn btn-primary" value="Пошаљи" ng-disabled='!fZakazivanje.$valid'/>
 		  				</div>
 						</div>
-						
+			     
 			      </fieldset>
 				    </form>
 						
@@ -228,20 +302,20 @@
 	  			</div>
 				</div> <!-- div realizovanih obaveza -->
 				
-				
+				<!-- podesavanje naloga -->
 				<div id="podesavanjeNaloga" ng-show="tab === 4">
 					<div class="forme_dezurstava">
 						<p class="imenaFormi"> Подешавање налога </p>
 						<form class="form-horizontal">
 	      		<fieldset>
 	      			
-	      			<div class="form-group col-lg-10" ng-init="view = 0">
-								<div class="radio">
+	      			<div class="form-group col-lg-10">
+								<div class="radio"> 
 									<label>
-										<input ng-click="view = 1" type="radio" name="optionsRadios" checked> Промена шифре
+										<input ng-click="view = 1" type="radio" name="optionsRadios" > Промена шифре
 									</label>
 								</div>		
-								<form class="form-horizontal" ng-show="view === 1" >
+								<form class="form-horizontal" ng-show="view === 1">
 								<fieldset>
 									<div class="col-lg-10">
 										<br/>
@@ -298,25 +372,6 @@
 									</div>
 								</fieldset>
 								</form>
-								
-								
-								<div class="radio">
-									<label>
-										<input ng-click="view = 3" type="radio" name="optionsRadios"> Промена предмета
-									</label>
-								</div>
-								<form class="form-horizontal" ng-show="view === 3" >
-								<fieldset>
-									<!-- zasto asistent sam menja svoje prdmete? -->
-									<div class="form-group">
-										<div class="col-lg-10 col-lg-offset-2">
-										<label> Promena predmeta </label>
-											<button type="reset" class="btn btn-default">Поништи</button>
-											<button type="submit" class="btn btn-primary">Потврди</button>
-										</div>
-									</div>
-								</fieldset>
-								</form>
 
 						</div>
 	      		</fieldset>
@@ -339,19 +394,16 @@
 										<td><button type="submit" class="btn btn-primary btn-sm">Прихвати</button>
 												<button type="submit" class="btn btn-warning btn-sm" title="Биће послатa порука асистенту">Извињење</button></td>
 									</tr>
-												
 							</table>
 							<br /> <br /> <br /> <br />
 							<table class="table table-striped table-bordered table-hover" ng-controller="CommentsController">
-								<caption>  </caption>
 									<tr class="bold">
-									<td width="7%"></td> <td width="93%"> Коментари </td>
+										<td width="7%"></td> <td width="93%"> Коментари </td>
 									</tr>
 									<tr ng-repeat="komentar in comments">
 										<td> <input type="checkbox" title="Обележи као прочитано" ></td>
 										<td>{{komentar.comment}}<footer class="text-info">Kоментар оставио/ла: {{komentar.assistant}}, {{komentar.course}}, датум: {{komentar.date}}</footer></td>	
 									</tr>
-												
 							</table>
 	  			</div>
 				</div> <!-- div sa porukama -->

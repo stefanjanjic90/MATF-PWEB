@@ -2,7 +2,6 @@
 
 var account = angular.module('accountModule', []);
 		// cuvati username ulogovanog korisnika u globalnoj promenljivoj($scope.user)
-		
 account.controller('SecDutyController', function($scope, $http){
 /*
     $scope.duty = []; // [course, assistant, date, time, remark]
@@ -18,37 +17,70 @@ account.controller('SecDutyController', function($scope, $http){
 */
 
 
-
   $scope.duty = [
     {	
-			course: 'Prograimiranje za web', 
-			assistant: 'Andjelka Zecevic', 
+			course: 'Тест из програмирања за веб', 
+			assistant: 'Анђелка Зечевић', 
 			date: '29.10.2014',
 			time: '09:00',
 			classroom: '704',
-			remark: 'Potsetnik: iskljuciti mrezu pre pocetka ispita.'
+			remark: 'Искључити мрежу пре почетка испита'
 		},
 		{ 
-			course: 'Razvoj softvera', 
-			assistant: 'Andjelka Zecevic', 
+			course: 'Колоквијум из развој софтвера', 
+			assistant: 'Мирјана Маљковић', 
 			date: '29.10.2014',
 			time: '09:00',
 			classroom: '704',
-			remark: 'blavla'
+			remark: ''
 		},
 		{
-			course: 'Uvod u organizaciju racunara',
-			assistant: 'Andjelka Zecevic',
+			course: 'Тест из увода у организацију рачунара',
+			assistant: 'Анђелка Зечевић',
 			date: '29.10.2014',
 			time: '09:00h',
-			classroom: 'Jagic',
+			classroom: 'Јаг 1',
 			remark: ''
 		}	
 ];
 
-    $scope.toggle = function() {
-        $scope.$broadcast('event:toggle');
+    $scope.toggle = function(index) {
+        //$scope.$broadcast('event:toggle');
+        $('#zamena_asistenti'+index).slideToggle(1000);
     }
+   
+   $scope.possibleRotate = ["Ивана Танасијевић", "Мирко Спасић"];
+   $scope.checkedReplace = [];
+   
+	 $scope.sync = function(bool, item, mod){
+			if(mod === 'r')
+			{
+				if(bool){
+				  // add item
+				  $scope.checkedReplace.push(item);
+				} else {
+				  // remove item
+				  for(var i=0 ; i < $scope.checkedReplace.length; i++) {
+				    if($scope.checkedReplace[i] === item){
+				      $scope.checkedReplace.splice(i,1);
+				    }
+				  }      
+				}
+			}
+		};
+	
+	  $scope.isChecked = function(item, mod){
+      var match = false;
+      if(mod === 'r')
+		  {  
+		  	for(var i=0 ; i < $scope.checkedClassrooms.length; i++) {
+		      if($scope.checkedClassrooms[i] === item){
+		        match = true;
+		      }
+		    }
+		  }
+      return match;
+  };
 /*
 
     $scope.possibleRotate = []; // [lista asistenata koji su slobodni]
@@ -63,16 +95,18 @@ account.controller('SecDutyController', function($scope, $http){
 						});
 
   */
-		$scope.possibleRotate = ["Ivana Tanasijevic", "Mirko Spasic"];
 
 
-}).directive('toggle', function() {
+});
+
+/*account.directive('toggle', function() {
     return function(scope, elem, attrs) {
         scope.$on('event:toggle', function() {
             elem.slideToggle(1000); 
                     });
     };
 });
+*/
 
 account.controller('PrimDutyController', function($scope, $http){
 /*
@@ -91,29 +125,56 @@ account.controller('PrimDutyController', function($scope, $http){
 
     $scope.duty = [
 				{	
-				course: 'Prograimiranje za web', 
-				assistants: ['Andjelka Zecevic', 'Tijana Kostic'],
+				id: '1',
+				course: 'Тест из програмирања за веб', 
+				groups: [{name:'Група 1', start:'09', end:'10', assistans:['Мика', 'Пера'], classrooms:['718','716']},
+								 {name:'Група 2', start:'10', end:'11', assistans:['Мика', 'Пера'], classrooms:['718','716']},
+								 {name:'Група 3', start:'11', end:'12', assistans:['Мика', 'Пера'], classrooms:['718','716']}],
 				date: '29.10.2014',
-				time: '09:00',
+				timeSum: '09:00-12:00',
 				remark: ''
 			},
 			{ 
-				course: 'Razvoj softvera', 
-				assistants: ['Andjelka Zecevic', 'Mirko Petrovic'],
+				id: '2',
+				course: 'Тест из Развоја софтвера', 
+				groups: [{name:'Група 1', start:'09', end:'10', assistans:['Мика', 'Неко'], classrooms:['718','716']}],
 				date: '29.10.2014',
-				time: '09:00',
+				timeSum: '09:00-12:00',
 				remark: ''
 			},
 			{
-				course: 'Uvod u organizaciju racunara',
-				assistants: ['Andjelka Zecevic', 'Sanja Tadic'],
+				id: '3',
+				course: 'Тест из увода у организацију рачунара',
+				groups: [{name:'Група 1', start:'09', end:'10', assistans:['Пера', 'Пера'], classrooms:['718','716']}],
 				date: '29.10.2014',
-				time: '09:00h',
-				classroom: 'Jagic',
+				time: '09:00h-12:00',
 				remark: '',
 			}	
 				];
-
+		$scope.bgColors=['bg-success','bg-info','bg-warning'];
+	
+		$scope.saveComment = function(index)
+		{
+			$('.divKomentar textarea').attr('disabled','disabled'); // prebaciti u deo kada se izvrsi http
+			$scope.msg="";
+			var commentPost = new Object();
+			post.id = $scope.duty[index];  //id obaveze za koju se ostavlja komentar
+			post.comment = $('.divKomentar textarea').val();
+			
+			$http.post('test.php', {id: $scope.id}, 
+			{
+				responseType:'JSON',
+				headers: {
+							'content-type': 'application/json'
+							}
+			}).success(function(data, status, headers, config){
+							if(data!=="null")	
+							{
+							}
+			}).error(function(data, status, headers, config){
+							$scope.msg="An error occured!";
+						});
+		}
 });
 
 account.controller('NewDutyController', function($scope, $http){
@@ -143,6 +204,8 @@ account.controller('NewDutyController', function($scope, $http){
 
 */
 
+$scope.bgColors=['bg-success','bg-info','bg-warning'];
+
 $scope.setSort = function(order)
 {
 	if(order === 1)
@@ -150,6 +213,15 @@ $scope.setSort = function(order)
 	else
 		$scope.orderByDate = false;
 }
+
+	$scope.returnArray = function(n)
+	{
+		var array =[];
+		for(var i = 1; i<=n; i++)
+			array.push(i);
+		return array;
+	}
+
 
 $scope.departure = [
 	'Информатика',
@@ -166,30 +238,26 @@ $scope.departure = [
 ];
 
 
-$scope.course = [
-	'Razvoj softvera',
-	'Informacioni sistemi',
-	'...'
-];
+
 
 
 $scope.classrooms = [
-	'Ucionica 1',
-	'Ucionica 2',
-	'Ucionica 3',
-	'Ucionica 4',
-	'Ucionica 5',
-	'Ucionica 6',
-	'Ucionica 7',
-	'Ucionica 8',
-	'Ucionica 9',
-	'Ucionica 10'		
+	'Учионица 1',
+	'Учионица 2',
+	'Учионица 3',
+	'Учионица 4',
+	'Учионица 5',
+	'Учионица 6',
+	'Учионица 7',
+	'Учионица 8',
+	'Учионица 9',
+	'Учионица 10'		
 ];
 
 
 $scope.assistants = [
-	'Mirko Spasic',
-	'Ana Spasic'
+	'Мирко Спасић',
+	'Ана Спасић'
 ];
 
 
@@ -299,7 +367,7 @@ account.controller('CompletedDutyController', function($scope, $http){
 
 $scope.compDuty = [
 	{
-		course: 'Programiranje za web',
+		course: 'Програмирање за веб',
 		date: '29.10.2104',
 		duration: '10h'
 	},
@@ -309,7 +377,7 @@ $scope.compDuty = [
 		duration: '02h'
 	},
 	{
-		course: 'Развој софтвера', 
+		course: 'Алгебра', 
 		date: '10.05.2014', 
 		duration: '02h'
 	}
@@ -334,19 +402,19 @@ account.controller('UserOfferController', function($scope, $http){
 
 $scope.offer = [
 	{
-		assistant: 'Tijana Kostic',
-		course: 'Programiranje za web',
+		assistant: 'Анђелка Зечевић',
+		course: 'Програмирање за веб',
 		date: '29.10.2104',
 		time: '09:00-10:00'
 	},
 	{
-		assistant: 'Tijana Kostic',
+		assistant: 'Мирјана Маљковић',
 		course: 'Развој софтвера', 
 		date: '10.05.2014', 
 		time: '09:00-10:00'
 	},
 	{
-		assistant: 'Tijana Kostic',
+		assistant: 'Иван Чукић',
 		course: 'Развој софтвера', 
 		date: '10.05.2014', 
 		time: '09:00-10:00'
@@ -373,7 +441,7 @@ account.controller('CommentsController', function($scope, $http){
 $scope.comments = [	
 	{
 		comment: '...',
-		assistant: 'TIjana',
+		assistant: 'Неки Асистент',
 		course: 'Neki kurs',
 		date: '29.10.2014'	
 	}
