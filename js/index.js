@@ -55,7 +55,9 @@ app.controller('indexControler', function($scope, $http, $location) {
   
   // TODO: tab u localStorage
   // tabovi...
-  localStorage.setItem('tab', 1);
+  if(!localStorage.tab)
+    localStorage.setItem('tab', 1);
+  
   //$scope.tab = 1;
   $scope.setTab = function(t) {
     if(!isNaN(t) && t>0 /*&& t < 10*/)
@@ -79,7 +81,8 @@ app.controller('indexControler', function($scope, $http, $location) {
   };
   
   // cuvamo ih u localStorage-u
-  localStorage.setItem('user', angular.toJson(user));
+  if(!localStorage.user)
+    localStorage.setItem('user', angular.toJson(user));
     
   // ng-show za log_out div
   $scope.loged = function() {
