@@ -9,11 +9,24 @@
 		<script type='text/javascript' src='js/angular-route.min.js'> </script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		
+		<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap-datetimepicker.pt-SR.js"></script>
+
+		
 		<script type="text/javascript" src="js/assistant.js"></script>
 		
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/me.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css">
+
 		
+		<script type="text/javascript">
+		$('#datepicker').datetimepicker({
+		  format: 'dd/MM/yyyy',
+		  language: 'pt-SR',
+		  pickTime: false
+		});
+	      </script>
 	
 	</head>
 	
@@ -22,7 +35,7 @@
 		<div id="tab-container">
 			<section ng-init="tab = 1">
 				<ul class="nav nav-pills nav-stacked">
-					<li ng-class="{ active:tab === 1}" > <a href ng-click="tab = 1">Дежурства</a></li>
+					<li ng-class="{ active:tab === 1}" > <a href ng-click="tab = 1">Предстојећа дежурства</a></li>
 					<li ng-class="{ active:tab === 2}" > <a href ng-click="tab = 2">Најављивање обавеза</a></li>
 					<li ng-class="{ active:tab === 3}" > <a href ng-click="tab = 3">Претходна дежурства</a></li>
 					<li ng-class="{ active:tab === 4}" > <a href ng-click="tab = 4">Подешавање налога</a></li>
@@ -42,22 +55,29 @@
 					</div>
 				</div>
 
-				<div ng-show="tab === 1">			
-			  	<div class="forme_dezurstava" ng-controller="SecDutyController ">
-						<p class="imenaFormi"> Споредна дежурства </p>
-						<div class="kartica" ng-repeat="dezurstvo in duty">
+				<div ng-show="tab === 1">
+				<section ng-init="tabSec = 1">
+				<ul class="nav nav-tabs">
+					<li ng-class="{ active:tabSec === 1}" > <a href ng-click="tabSec = 1">Споредна дежурства</a></li>
+					<li ng-class="{ active:tabSec === 2}" > <a href ng-click="tabSec = 2">Главна дежурства</a></li>
+				</ul>
+				</section>
+					<div class="forme_dezurstava" ng-controller="SecDutyController" ng-show="tabSec === 1">
+						<p class="imenaFormi"> </p>	
+						<div class="kartica" id="sporedna_kartica{{$index}}" ng-repeat="dezurstvo in duty">
 							<div class = "header" >															
 								<a title="Покушај замену" href="" ng-click="toggle($index)"><span id="grafZamena" class="glyphicon glyphicon-refresh"></span></a>
 								<span> <b> {{ dezurstvo.course }} </b> </span> <br/>
 								<span> {{dezurstvo.assistant}} </span> 
 								<br/>
-									<ul id="zamena_asistenti{{$index}}" class="tabela_zamena">
+								<div id="zamena_asistenti{{$index}}" class="tabela_zamena">
+									<ul>
 										<li ng-repeat = "zamena in possibleRotate">
-											<input type="checkbox" ng-change="sync(bool, zamena, 'r')" ng-model="bool" ng-checked="isChecked(zamena, 'r')"> {{zamena}}
-										</li>
-										<br/>								
-										<input type="button" class="btn btn-primary" value="Пошаљи" ng-disabled="!checkedReplace.length" ng-click="">
+										  <input type="checkbox" ng-change="sync(bool, zamena, 'r')" ng-model="bool" ng-checked="isChecked(zamena, 'r')"> {{zamena}} 
+										</li>							
 									</ul> 
+									<input type="button" class="btn btn-primary btnReplace" value="Понуди дежурство" ng-disabled="!checkedReplace.length" ng-click="sendRequest($index)">
+								</div> 
 							</div>
 							<div class = "bodyCard">
 								<span> Датум: {{dezurstvo.date }}, {{dezurstvo.time}} </span> <br/>
@@ -67,9 +87,8 @@
 						</div>   <!-- div kartica -->
 					</div>	<!-- div sporedna forma dezurstva -->
 					
-								<div class="forme_dezurstava" ng-controller="PrimDutyController ">
-						<p class="imenaFormi"> Главна дежурства </p>
-						
+					<div class="forme_dezurstava" ng-controller="PrimDutyController" ng-show="tabSec === 2">
+						<p class="imenaFormi"> </p>	
 						<div class="kartica" ng-repeat="dezurstvo in duty" >
 						<section  ng-init="tab$index = 1"> 
 						  <ul class="nav nav-tabs">
@@ -106,8 +125,8 @@
 						<!-- tab komentari -->
 							<div class="tab-pane" ng-show="tab$index===3">
 								<div class="divKomentar">
-									<textarea rows="4" cols="31"  placeholder="Постави коментар на нивоу целокупне активности"> </textarea>
-									<input type="submit" class="btn btn-primary" value="Постави коментар" ng-click="saveComment($index)">
+									<textarea rows="4" cols="31" > </textarea>
+									<input type="submit" class="btn btn-primary" value="Постави коментар" ng-click="saveComment($index)" id="postaviKomentar{{$index}}">
 								</div>
 						 	</div>
 
@@ -138,17 +157,17 @@
 							</div>
 						</div>
 	
-				    <div ng-repeat="grupa in returnArray(brGrupa)" class="{{bgColors[$index%3]}} grupa"><!-- div za pojedinacnu grupu -->
+				    <div ng-repeat="grupa in returnArray(brGrupa)" class="{{bgColors[$index%3]}} grupa" id="grupa{{$index}}"><!-- div za pojedinacnu grupu -->
 							<form name="fGrupa">
 							<div class="form-group"> <!-- naziv grupe -->
-							<label class="col-lg-2 control-label">Група</label>
+							<label class="col-lg-3 control-label">Група</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" name="imeGrupe" ng-model="imeGrupe" placeholder="Група {{$index+1}}" ng-required="true">
+									<input type="text" class="form-control" name="imeGrupe" ng-model="grupa.ime" placeholder="Група {{$index+1}}" ng-required="true" ng-pattern="[a-zA-Z0-9]*">
 								</div>
 							</div> 
 			      	
 			      	<div class="form-group"> <!-- datum  -->
-							<label class="col-lg-2 control-label">Предлог датума</label>
+							<label class="col-lg-3 control-label">Предлог датума</label>
 								<div class="col-lg-8">
 									<div class="radio" ng-required="true">
 										<label>
@@ -163,27 +182,27 @@
 			      	
 			      	<div ng-show="datumRadio"><!-- div se prikazuje ako je izabran tacan datum -->
 			      		
-			      	<div class="form-group"> <!-- datepicker -->
-								<label class="col-lg-2 control-label">Датум</label>
+							<div class="form-group"> <!-- datepicker -->
+								<label class="col-lg-3 control-label">Датум</label>
 								<div class="col-lg-8">								
-									<div class='input-group date' id='datepicker'>
-										<input type='text' class="form-control" data-date-format="YYYY/MM/DD" placeholder="Датум" ng-model="datum">
+									<div class='input-group date' >
+										<input type='text' class="form-control" data-date-format="YYYY/MM/DD" placeholder="Датум" ng-model="grupa.datum" ng-pattern="\d\d\.\d\d\.\d\d\d\d">
 										<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 									</div>
 								</div>
 							</div>
 			      		
 			      	<div class="form-group"> <!-- timepicker obaveze-->						
-							<label class="col-lg-2 control-label">Термин обавезе</label>	
+							<label class="col-lg-3 control-label">Термин обавезе</label>	
 								<div class='col-lg-4'>
-				          <div class='input-group date' id='timepicker1'>
-				            <input type='text' class="form-control" ng-model="startObaveze" placeholder="Од" >
+				          <div class='input-group date' >
+				            <input type='text' class="form-control" ng-model="grupa.startObaveze" placeholder="Од" ng-pattern="\d\d:\d\d">
 				           <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 				          </div>
 				    		</div>
 				    		<div class='col-lg-4'>
-				          <div class='input-group date' id='timepicker2'>
-				            <input type='text' class="form-control" ng-model="endObaveze" placeholder="До" >
+				          <div class='input-group date' >
+				            <input type='text' class="form-control" ng-model="grupa.krajObaveze" placeholder="До" ng-pattern="\d\d:\d\d">
 				           	<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 				          </div>
 				    		</div> 
@@ -191,16 +210,16 @@
 			      		
 			      		
 			      	<div class="form-group"> <!-- timepicker rezervacije-->						
-							<label class="col-lg-2 control-label">Термин резервације</label>	
+							<label class="col-lg-3 control-label">Термин резервације</label>	
 								<div class='col-lg-4'>
-				          <div class='input-group date' id='timepicker1'>
-				            <input type='text' class="form-control" ng-model="startRez" placeholder="Од" >
+				          <div class='input-group date' >
+				            <input type='text' class="form-control" ng-model="grupa.startRez" placeholder="Од" ng-pattern="\d\d:\d\d">
 				           <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 				          </div>
 				    		</div>
 				    		<div class='col-lg-4'>
-				          <div class='input-group date' id='timepicker2'>
-				            <input type='text' class="form-control" ng-model="endRez" placeholder="До" >
+				          <div class='input-group date' >
+				            <input type='text' class="form-control" ng-model="grupa.krajRez" placeholder="До" ng-pattern="\d\d:\d\d">
 				           	<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 				          </div>
 				    		</div> 
@@ -209,18 +228,18 @@
 			      	</div> <!-- kraj diva koji se prikazuje kada je izabran tacan datum -->
 
         			<div class="form-group"> <!-- ucionice -->
-								<label class="col-lg-2 control-label">Потребне учионице</label>
+								<label class="col-lg-3 control-label">Потребне учионице</label>
 								<div class="col-lg-8">
 									<div class="radio">
 									<label ng-repeat="ucionica in classrooms">
 										<input type="checkbox" ng-change="sync(bool, ucionica, 'c')" ng-model="bool" ng-checked="isChecked(ucionica, 'c')"> {{ucionica}}
 									</label>
-									</div>
+									</div> 
 								</div>
 							</div>
 			      
 			      	<div class="form-group"> <!-- rad na racunaru  -->
-							<label class="col-lg-2 control-label">Рад на рачунару</label>
+							<label class="col-lg-3 control-label">Рад на рачунару</label>
 								<div class="col-lg-8">
 									<div class="radio">
 										<label>
@@ -234,40 +253,40 @@
 							</div>	
 			      	
 			      	<div class="form-group"> <!-- broj  studenata -->
-							<label  class="col-lg-2 control-label">Број студената</label>
+							<label class="col-lg-3 control-label">Број студената</label>
 								<div class="col-lg-8">
-		    					<input type="text" class="form-control" name="brStudenata" ng-model="brStudenata" placeholder="Очекивани број студената" ng-required="true" ng-pattern="/^[0-9]+$/">
+		    					<input type="text" class="form-control" name="brStudenata" ng-model="grupa.brStudenata" placeholder="Очекивани број студената" ng-required="true" ng-pattern="/^[0-9]+$/">
 		  					</div>
 							</div>
 							
 							<div class="form-group"> <!-- broj asistenata -->
-							<label  class="col-lg-2 control-label">Број асистената</label>
+							<label  class="col-lg-3 control-label">Број асистената</label>
 								<div class="col-lg-8">
-		    					<input type="text" class="form-control" name="brAsistenata" ng-model="brAsistenata" placeholder="Број потребних асистената" ng-required="true" ng-pattern="/^[0-9]+$/">
+		    					<input type="text" class="form-control" name="brAsistenata" ng-model="grupa.brAsistenata" placeholder="Број потребних асистената" ng-required="true" ng-pattern="/^[0-9]+$/">
 		  					</div>
 							</div>
 			      
 			      	<div class="form-group"> <!-- napomena za koordinatora -->
-							<label class="col-lg-2 control-label">Напомена</label>
+							<label class="col-lg-3 control-label">Напомена</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" name="napomenaK" ng-model="napomenaK" placeholder="Напомена за координатора">
+									<input type="text" class="form-control" name="napomenaK" ng-model="grupa.napomenaK" placeholder="Напомена за координатора" ng-pattern="[a-zA-Z0-9]*">
 								</div>
 							</div> 
 
 			      	<div class="form-group"> <!-- napomena za asistenta -->
-							<label class="col-lg-2 control-label">Напомена</label>
+							<label class="col-lg-3 control-label">Напомена</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" name="napomenaA" ng-model="napomenaA" placeholder="Напомена за асистенте">
+									<input type="text" class="form-control" name="napomenaA" ng-model="grupa.napomenaA" placeholder="Напомена за асистенте" ng-pattern="[a-zA-Z0-9]*">
 								</div>
 							</div>
 							 
 							<div class="form-group">
 		  					<div class="col-lg-10 col-lg-offset-2">
-		    					<input type="submit" class="btnSave btn btn-default" value="Сачувај">
+		    					<input type="submit" class="btnSave btn btn-default" value="Сачувај" ng-click="saveGroup($index)">
 		  					</div>
-							</div>
+							</div> 
 			      </form>
-			      </div> <!-- kraj diva za pojedinacnu grupu -->
+			      </div> <!-- kraj diva za pojedinacnu grupu --> 
 						
 			      <br/>
 						<div class="form-group">
