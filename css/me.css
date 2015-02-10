@@ -58,7 +58,6 @@ body
    padding: 10px 20px;
    overflow: auto;
    clear: both;
-   margin-top: 40px;
    
  }
 
@@ -223,6 +222,11 @@ footer
 	font-size: x-small;
 }
 
+#top
+{
+	margin-bottom: 40px;
+}
+
 
 
 .tableName 
@@ -265,8 +269,17 @@ footer
 
 .tabela_zamena
 {
-	list-style: none;
 	display:  none;
+}
+
+.tabela_zamena ul
+{
+	list-style: none;
+}
+
+.btnReplace
+{
+	margin-left: 50px;
 }
 
 .btnSave

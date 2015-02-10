@@ -32,14 +32,9 @@ raspored zakazanih obaveza
 	  <label class="col-lg-2 control-label">Школска година</label>
 	  <div class="col-lg-4">
 	    <select class="form-control" name="izabranaGodina" ng-model="izabranaGodina">
-	      <!-- <option ng-repeat="katedra in katedre" ng-model="formData.k" name="katedra"> {{ katedra }} </option> -->
+	      <option ng-repeat="g in godine"> {{ g }} </option> -->
 	      <!-- TODO: godine za koje postoji unos u ng-repeat -->
-	      <!-- TODO: samo iz aktivne godine moze da se otkaze obaveza! -->
 	      <!-- podrazumevana godina je trenutna! -->
-	      <option>2015</option>
-	      <option>2014</option>
-	      <option>2013</option>
-	      <option>2012</option>
 	    </select>
 	  </div>
 	  <span class="col-lg-6"> </span>
@@ -52,7 +47,7 @@ raspored zakazanih obaveza
     <!-- sortiranje po danima u nedelji; aktivan je tab za trenutni dan -->
     <div>
       <ul class="nav nav-tabs">
-	<li ng-repeat="dan in dani" class="{active:$index===trenutniDan()}"> <a href="" data-toggle="tab" aria-expanded="true" ng-click="odabraniDan($index)"> {{ dan }} </a></li> 
+	<li ng-repeat="dan in dani" class="{active: $index===trenutniDan()}"> <a href="" data-toggle="tab" aria-expanded="true" ng-click="odabraniDan($index)"> {{ dan }} </a></li> 
       </ul>
     </div>
     <div class="tab-content">
@@ -66,7 +61,7 @@ raspored zakazanih obaveza
             <th ng-click="sort='ucionice'; reverse=!reverse" title="Кликните за сортирање по резервисаним учионицама.">Резервисане учионице</th>
             <th ng-click="sort='opis'; reverse=!reverse" title="Кликните за сортирање по обавезама.">Опис обавезе</th>
             <th ng-click="sort='glavni_dezurni'; reverse=!reverse" title="Кликните за сортирање по главном дежурном.">Главни дежурни</th>
-            <th ng-show="loged() && koord()">Опције</th> <!-- loged(), koord() -> index.js indexControler;  -->
+            <th ng-show="loged() && koord() && aktivnaGodina()">Опције</th> <!-- loged(), koord() -> index.js indexControler;  -->
 	  </tr>
 	</thead>
 	<tbody>
@@ -76,7 +71,7 @@ raspored zakazanih obaveza
             <td>{{ aktivnost.ucionice }}</td>
             <td>{{ aktivnost.opis }}</td>
             <td>{{ aktivnost.glavni_dezurni }}</td>
-            <td ng-show="loged() && koord()"><button type="submit" class="btn btn-primary btn-sm" name="submit" ng-click="otkaziObavezu(aktivnost.id)"> Откажи обавезу </button></td> <!-- ng-show="loged() && koord()" -->
+            <td ng-show="loged() && koord() && aktivnaGodina()"><button type="submit" class="btn btn-primary btn-sm" name="submit" ng-click="otkaziObavezu(aktivnost.id)"> Откажи обавезу </button></td> <!-- ng-show="loged() && koord()" -->
 	  </tr>
 	</tbody>
       </table>

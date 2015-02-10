@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ngRoute', 'userControllers', 'userDirectives', 'Application']);
+var app = angular.module('App', ['ngRoute', 'userControllers', 'userDirectives']);
 
 app.config(
   ['$routeProvider',
@@ -17,21 +17,60 @@ app.config(
 	  templateUrl: 'pages/public/zauzetost.html',
 	  controller: 'HoursOnCallController'
 	})
-	.when('/p3', {templateUrl: 'pages/asistent/dezurstva.html'})
+	.when('/p3', {
+	  templateUrl: 'pages/asistent/obavestenja.html',
+	  controllers: 'UserOfferController, CommentsController'
+	})
 	.when('/p4', {
+	  templateUrl: 'pages/asistent/dezurstva.html',
+	  controllers: 'PrimDutyController, SecDutyController'
+	})
+	.when('/p5', {
+	  templateUrl: 'pages/asistent/najavljivanjeobaveze.html', 
+	  controller: 'NewDutyController'
+	})
+	.when('/p6', {
+	  templateUrl: 'pages/asistent/prethodnadezurstva.html',
+	  controller: 'CompletedDutyController'
+	})
+	.when('/p7', {
+	  templateUrl: 'pages/asistent/podesavanjenaloga.html'
+	  //controller: ''
+	})
+	//.when('/p7', {
+	//  templateUrl: 'pages/asistent/poruke.html',
+	//  controller: ''
+	//})
+	.when('/p8', {
+	  templateUrl: 'pages/koordinator/pristigleobaveze.html',
+	  controller: 'SecDutyController'
+	})
+	.when('/p9', {
+	  templateUrl: 'pages/koordinator/zakazivanjeobaveza.html',
+	  controller: 'NewDutyController'
+	})
+// 	.when('/p9', {
+// 	  templateUrl: 'pages/koordinator/pristigleobaveze.html',
+// 	  controller: 'SecDutyController'
+// 	})
+// 	.when('/p10', {
+// 	  templateUrl: 'pages/koordinator/zakazivanjeobaveza.html',
+// 	  controller: 'NewDutyController'
+// 	})
+	.when('/p10', {
 	  templateUrl: 'pages/administrator/info.html',
 	  controller: 'infoControler'
 	})
-	.when('/p5', {
+	.when('/p11', {
 	  templateUrl: 'pages/administrator/newuser.html',
 	  controller: 'newUserControler'
 	})
-	.when('/p6', {
+	.when('/p12', {
 	  templateUrl: 'pages/administrator/deleteuser.html',
 	  controller: 'deleteUserControler'
 	})
-	.when('/p7', {templateUrl: 'pages/administrator/reset.html'})
-	.when('/p8', {
+	.when('/p13', {templateUrl: 'pages/administrator/reset.html'})
+	.when('/p14', {
 	  templateUrl: 'pages/administrator/ucionice.html',
 	  controller: 'ucioniceControler'
 	})
@@ -39,6 +78,7 @@ app.config(
    }
   ]
 );
+
 
 
 app.controller('indexControler', function($scope, $http, $location) {
