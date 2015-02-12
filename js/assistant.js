@@ -1,10 +1,11 @@
 // kontroleri za asistenta
 
 var account = angular.module('accountModule', []);
-		// cuvati username ulogovanog korisnika u globalnoj promenljivoj($scope.user)
+
+
 account.controller('SecDutyController', function($scope, $http){
 /*
-    $scope.duty = []; // [course, assistant, date, time, remark]
+    $scope.duty = []; // [course, assistant, date, time, classroom, remark]
   
     			$http.get('sporedna_dezurstva.php?user='+$scope.user, {responseType: 'JSON'}).
 						success(function(data, status, headers, config){
@@ -44,8 +45,7 @@ account.controller('SecDutyController', function($scope, $http){
 		}	
 ];
 
-    $scope.toggle = function(index) {
-        //$scope.$broadcast('event:toggle');
+   $scope.toggle = function(index) {
         $('#zamena_asistenti'+index).slideToggle(1000);
     }
    
@@ -81,6 +81,12 @@ account.controller('SecDutyController', function($scope, $http){
 		  }
       return match;
   };
+  
+  	$scope.sendRequest = function(index)
+  	{
+  		$scope.toggle(index);
+  	}
+  
 /*
 
     $scope.possibleRotate = []; // [lista asistenata koji su slobodni]
@@ -155,11 +161,11 @@ account.controller('PrimDutyController', function($scope, $http){
 	
 		$scope.saveComment = function(index)
 		{
-			$('.divKomentar textarea').attr('disabled','disabled'); // prebaciti u deo kada se izvrsi http
+			$('#postaviKomentar'+index).attr('disabled','disabled'); // prebaciti u deo kada se izvrsi http
+		
 			$scope.msg="";
-			var commentPost = new Object();
-			post.id = $scope.duty[index];  //id obaveze za koju se ostavlja komentar
-			post.comment = $('.divKomentar textarea').val();
+			post.comment = $('#postaviKomentar'+index).val();
+			
 			
 			$http.post('test.php', {id: $scope.id}, 
 			{
@@ -203,6 +209,36 @@ account.controller('NewDutyController', function($scope, $http){
     $scope.assistants = angular.fromJson(data);
 
 */
+
+$scope.grupa = {};
+
+$scope.saveGroup = function(index)
+{
+	$('#grupa'+index).animate({height:40},1200);
+	
+	    var $tmp = $('#grupa'+index),
+          $initHeight = 40; 
+    
+    $tmp.each(function() {
+        $.data(this, "realHeight", $(this).height());  
+        }).css({ overflow: "hidden", height: $initHeight + 'px' });
+
+    $tmp.toggle(function() {
+          $tmp.animate({ height: $tmp.data("realHeight") }, 00);
+          $switch.html("-");
+          
+        }, function() {
+            $dscr.animate({ height: $initHeight}, 600);
+            $switch.html("+");
+        });
+}
+
+$(function () {
+		$('#datepicker').datetimepicker({
+					pickTime: false
+				});
+			});
+
 
 $scope.bgColors=['bg-success','bg-info','bg-warning'];
 
@@ -450,11 +486,9 @@ $scope.comments = [
 
 });
 
-/*
-account.controller('NewDutyController',function($scope, $http){
 /*	 
   	
-  /*$(function () {
+  $(function () {
 		$('#selectDatum').datetimepicker({
 					pickTime: false
 				});
