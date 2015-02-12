@@ -5,13 +5,6 @@ var publicpages = angular.module('publicPagesModule', []);
 
 publicpages.controller('rasporedControler', function($scope, $http) {
   
-  $scope.raspored = {};
-  
-  // citamo raspored iz .json fajla
-  $http.get('json/raspored.json').success(function(data){
-    $scope.raspored = angular.fromJson(data);
-  });
-  
   // poruka o uspesnosti i promenljiva za njen prikaz
   $scope.msg = "";
   $scope.showMsg = false;
@@ -36,47 +29,114 @@ publicpages.controller('rasporedControler', function($scope, $http) {
   
   // godine za koje postoje rasporedi aktivnosti
   $scope.godine = [2015, 2014];
+  $scope.meseci = ['Јануар', 'Фебруар', 'Март', 'Април', 'Мај', 'Јун', 'Јул', 'Август', 'Септембар', 'Октобар', 'Новембар', 'Децембар'];
+  $scope.nedelje = [];
+  
   // TODO: ajax poziv
 //   $http.get("aktivnegodine.php").success(function(data) {
 //     $scope.godine = angular.fromJson(data);
 //   });
-  
-  
-  // prikaz podataka po danima u nedelji
-  $scope.dani = [
-    "Недеља",
-    "Понедељак",
-    "Уторак",
-    "Среда",
-    "Четвртак",
-    "Петак",
-    "Субота"
-  ];
-  
+    
   // trenutni datum
   var datum = new Date();
   
+  // za ispis u select kontroli
+  $scope.trenutniMesec = function() {
+    return datum.getMonth();
+  }
+  
+  // trenutni dan u mesecu
   $scope.trenutniDan = function() {
     return datum.getDay();
   }
-  // console.log("dan: " + $scope.dani[datum.getDay()]);  
+
+  // podrazumevane vrednosti
+  $scope.rasporedObaveza = {
+    izabranaGodina: datum.getFullYear(),
+    izabraniMesec: $scope.meseci[datum.getMonth()],
+    izabranaNedelja: 1
+  };  
   
-  // indeks dana u nedelji po nizu dani
-  // npr 0 - nedelja, 1 - ponedeljak,...
-  $scope.dan = datum.getDay();
-  $scope.odabraniDan = function(d) {
-    $scope.dan = d;
+  // TODO: da li je dobra logika oko broja nedelja u mesecu
+  $scope.nedeljeUMesecu = function() {
+    $scope.nedelje = [];
+    
+    var godina = $scope.rasporedObaveza.izabranaGodina;
+    var mesec = $scope.meseci.indexOf(($scope.rasporedObaveza.izabraniMesec).trim());
+    
+    console.log("mesec: " +  (mesec + 1));
+    
+    //var prviUMesecu = new Date(godina, mesec, 1);
+    var poslednjiUMesecu = new Date(godina, mesec + 1, 0);
+    
+    //var tmp = prviUMesecu.getDay() + poslednjiUMesecu.getDate();
+    //var brojNedeljaUMesecu = Math.ceil(tmp/7);
+    
+    var brojNedeljaUMesecu = Math.ceil(poslednjiUMesecu.getDate() / 7);
+    
+    for(var i = 0; i < brojNedeljaUMesecu; i++)
+      $scope.nedelje[i] = i + 1;
+    
+    //console.log("poslednjiUMesecu: " + poslednjiUMesecu.getDate());
+    //console.log("brojNedeljaUMesecu: " + brojNedeljaUMesecu);
+    //console.log("nedelje: " + $scope.nedelje);
   }
   
-  // za filtriranje prikaza po godini
-  $scope.izabranaGodina = (new Date()).getFullYear();
+  $scope.nedeljeUMesecu();
   
-  // TODO: da li samo iz trenutne godine, ili iz trenutnog roka?
-  // moze da se otkaze obaveza samo iz trenutne godine
-  $scope.aktivnaGodina = function() {
-    return $scope.izabranaGodina == (new Date()).getFullYear();
+  // prikaz rasporeda po danima
+  $scope.prikazPoDanima = false;
+  
+  // koji dan smo izabrali u filteru rasporeda po danima
+  // na pocetku je to trenutni dan
+  $scope.izabranDan = $scope.trenutniDan();
+  
+  
+  $scope.raspored = {};
+ 
+  // citamo raspored iz .json fajla
+  $http({
+    method: 'post',
+    url: 'json/raspored.json',
+    data: angular.toJson($scope.rasporedObaveza),
+    responseType: 'JSON',
+    headers: {
+      'Content-Type': 'application/json; charset=UFT-8'
+    }
+  })
+  .success(function(data, status, headers, config) {
+    // ...
+    $scope.raspored = angular.fromJson(data);
+  })
+  .error(function(data, status, headers, config) {
+    // ...
+  });
+  
+  // raspored je aktivan ukoliko datum zakazane obaveze nije jos prosao
+  // ukoliko je raspored aktivan i korisnik je ulogovan kao koordinator, korisnik ima na raspolaganju opciju da otkaze obavezu
+  $scope.aktivanRaspored = function(d) {
+    return ((new Date(d)).getTime() > (new Date()).getTime());
   }
   
+  $scope.filtrirajRaspored = function() {
+    console.log("filtrirajRaspored: " + angular.toJson($scope.rasporedObaveza));
+    $http({
+      method: 'post',
+      url: 'json/raspored.json',
+      data: angular.toJson($scope.rasporedObaveza),
+      responseType: 'JSON',
+      headers: {
+	'Content-Type': 'application/json; charset=UFT-8'
+      }
+    })
+    .success(function(data, status, headers, config) {
+      $scope.raspored = angular.fromJson(data);
+      // TODO: raspored je prazan za trazzeni termin - ispisi obavestenje
+    })
+    .error(function(data, status, headers, config) {
+      // ...
+    });
+  } // filtrirajRaspored()
   
   $scope.otkaziObavezu = function(id) {
     
@@ -110,11 +170,21 @@ publicpages.controller('rasporedControler', function($scope, $http) {
     }
     
   } // otkaziObavezu()
+
+
+  // ukoliko je datum zakazane obaveze nedelja, dodajemo odgovarajucu klasu za ispis
+  $scope.isNedelja = function(dan) {
+    if((new Date(dan)).getDay() == 0) {
+      return true;
+    
+    }
+    return false;
+  }
     
 });
 
-// filtre za sortiranje i ispis rasporeda po danima u nedelji
-publicpages.filter('danNedelja', function() {
+// TODO: filtre za sortiranje i ispis rasporeda po danima u nedelji
+publicpages.filter('filterRaspored', function() {
   
   return function(raspored, scope) {
     var rezultat = [];
@@ -122,10 +192,9 @@ publicpages.filter('danNedelja', function() {
     var danas = Date.now();
     for(var i = 0; i < raspored.length; i++) {
       var tmp = raspored[i].datum;
-      // console.log((new Date(tmp)).getDay());
-      if(((new Date(tmp)).getDay() === scope.dan) && ((new Date(tmp)).getFullYear() == scope.izabranaGodina)) {
+      
+      if((new Date(tmp)).getDay() == scope.izabranDan) {
 	rezultat.push(raspored[i]);
-	// console.log(raspored[i].datum);
       }
     }
   
@@ -134,7 +203,8 @@ publicpages.filter('danNedelja', function() {
   
 });
 
-// TODO: dodaj kontroler za zauzetost asistenata
+
+
 publicpages.controller('HoursOnCallController', function($scope, $http, $filter){
 
 	$scope.asTable = []; // tabela svih obaveza asistenta u tekucoj godini koje se nalaze u bazi [datum, vreme, opis_obaveze]
